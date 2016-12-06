@@ -30,6 +30,19 @@ A partir de aqui podemos editar el contenido del repositorio local y modificar a
 6- Para pushear el commit al repositorio remoto:
 
     git push origin nuevo_branch
+
+
+Para hacer un merge del nuevo branch al branch development:
+
+7- Ir a la seccion de Pull Requests:
+
+    https://github.com/ingsoft-famaf/carcassonne/pulls
+
+8- Presionar el boton nuevo pull request o ir al siguiente link:
+
+    https://github.com/ingsoft-famaf/carcassonne/compare
+
+9- Crear el Pull Request entre los branchs seleccionados
     
 
 
