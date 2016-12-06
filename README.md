@@ -1,4 +1,4 @@
-# el-rejunte
+# Carcassonne
 
 Pasos para crear un branch y trabajar.
 
