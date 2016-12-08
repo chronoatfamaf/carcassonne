@@ -62,7 +62,7 @@ class EditarPerfil(UpdateView):
     template_name = 'editar_perfil.html'
     model = Usuario
     form_class = FormularioUsuario
-    success_url = '/lista_de_metas/'
+    success_url = '/home'
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
