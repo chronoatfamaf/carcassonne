@@ -12,7 +12,7 @@
       <p><label for="id_password">Contraseña:</label>
         {{ form.password }}</p>
       {% csrf_token %}
-      <input type="hidden" name="next" value="/home" />
+      <input type="hidden" name="next" value="/lista_de_partidas" />
       <input type="submit" value="Ingresar" />
       {{ form.non_field_errors }}
     </form>

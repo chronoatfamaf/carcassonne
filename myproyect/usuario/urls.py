@@ -12,6 +12,4 @@ urlpatterns = [
     url(r'^perfil/', views.DetallePerfil.as_view(), name='perfil'),
     url(r'^editar_perfil', views.EditarPerfil.as_view(),
         name='editar_perfil'),
-    url(r'^home', views.home,
-        name='home'),
 ]

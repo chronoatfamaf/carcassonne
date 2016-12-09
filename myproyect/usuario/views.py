@@ -17,6 +17,7 @@ from django.views.generic import CreateView, DetailView, UpdateView
 
 from usuario.forms import FormularioUsuario
 from usuario.models import Usuario
+from partida.urls import *
 
 
 # from django.views.generic import ListView, TemplateView
@@ -28,10 +29,6 @@ def pagina_principal(request):
 
     return render(request, 'pagina_principal.html')
 
-def home(request):
-    """ pag basica de home """
-
-    return render(request, 'home.html')
 
 class Registro(CreateView):
     """ Registro de usuario """
@@ -62,7 +59,7 @@ class EditarPerfil(UpdateView):
     template_name = 'editar_perfil.html'
     model = Usuario
     form_class = FormularioUsuario
-    success_url = '/home'
+    success_url = '/lista_de_partidas/'
 
     @method_decorator(login_required(login_url='/login/'))
     def dispatch(self, request, *args, **kwargs):
