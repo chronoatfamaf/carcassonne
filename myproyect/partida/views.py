@@ -14,10 +14,39 @@ def lista_de_partidas(request):
     partidas = Partida.objects.all()
     # asignamos a las partidas las cantidad actual de jugadores que estan esperando por jugarlas
     for partida in partidas:
-        partida.jugando = Usuario.filter(partida=partida).count()
+        partida.jugando = Usuario.objects.filter(partida=partida).count()
         partida.save()
-    #partida = Partida(cantidad_jugadores=5,jugando=2)
-	#partidas = []
- 	#   partidas.insert(0,partida)
+
     return render(request, 'lista_de_partidas.html',
                   {'partidas': partidas})
+
+@login_required
+def unirse_a_partida(request, pk):
+    partida = Partida.objects.get(pk=pk)
+    usuario = Usuario.objects.get(usuario=request.user.id)
+    # unimos el usuario a la partida
+    usuario.partida = partida
+    usuario.save()
+    # actualiazmos la cantidad de jugadores que estan jugando la partida
+    partida.jugando = Usuario.objects.filter(partida=partida).count()
+    partida.save()
+
+    return render(request,'unirse_a_partida.html', {partida : 'partida'})
+    
+@login_required
+def crear_partida(request):
+    if request.method == "POST":
+        form = FormularioPartida(request.POST)
+        if form.is_valid():
+            partida = form.save(commit=False)
+            usuario = Usuario.objects.get(usuario=request.user.id)
+            partida.save()
+            usuario.partida = partida
+            usuario.save()
+            #pk = partida.pk
+            return render(request, 'unirse_a_partida.html', {partida : 'partida'})
+    else:
+        form = FormularioPartida()
+        
+    return render(request, 'crear_partida.html', {'form': form})
+

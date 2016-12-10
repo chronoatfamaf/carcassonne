@@ -12,3 +12,4 @@ class FormularioPartida(forms.ModelForm):
         exclude = ('jugando',)
         
         fields = '__all__'
+        
