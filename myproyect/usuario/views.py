@@ -57,7 +57,6 @@ class DetallePerfil(DetailView):
 
 
 class EditarPerfil(UpdateView):
-    """ Edición de datos de la cuenta de usuario """
 
     template_name = 'editar_perfil.html'
     model = Usuario
