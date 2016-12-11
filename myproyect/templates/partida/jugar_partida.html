@@ -1,0 +1,18 @@
+  {% extends 'base.html' %}
+{% load staticfiles %}
+  <head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+{% block content %}
+<h1> Jugandoo !</h1>
+
+  <table class="table">
+    {% for jugador in jugadores%}
+      <tr> 
+          <td>{{ jugador.nombre }}</td>
+      </tr>
+    {% empty %}
+      <p>Error al imprimir nombre de jugadores : / </p>
+    {% endfor %}
+  </table>
+{% endblock %}
