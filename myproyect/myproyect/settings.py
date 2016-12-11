@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # apps instaladas por programador
     'widget_tweaks',
     'usuario.apps.UsuarioConfig',
+    'partida.apps.PartidaConfig',
     # apps instadas por defecto
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,7 +63,8 @@ TEMPLATES = [
             'templates',
             os.path.join(BASE_DIR, "../templates/"),
             os.path.join(BASE_DIR, "./templates/"),
-            os.path.join( os.path.join( os.path.join(BASE_DIR, 'templates'), 'usuario')),
+            os.path.join( os.path.join(BASE_DIR, 'templates'), 'partida'),
+            os.path.join( os.path.join( os.path.join(BASE_DIR, 'templates'), 'usuario',)),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

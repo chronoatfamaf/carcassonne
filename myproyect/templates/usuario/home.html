@@ -1,6 +1,7 @@
-  {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
-  <head>
-    <meta charset="UTF-8">
-    <title>HOME</title>
-     <p>EN HOME </p>
+
+{% block content %}
+<a class="btn btn-default" href="{% url 'crear_partida' %}">Crear partida</a>
+{% endblock %}
+

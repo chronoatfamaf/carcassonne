@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+  <h2> Partida numero {{ partida.id }} esta por comenzar</h2>
+  <a class="btn btn-success" href="{% url 'turnoj1' partida.id %}">Comenzar</a>
+{% endblock %}

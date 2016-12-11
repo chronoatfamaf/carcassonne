@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+  <h2> Partida numero {{ partida.id }} </h2>
+  <h3>Turno del jugador {{ partida.jugador2 }}</h3>
+  <a class="btn btn-danger" href="{% url 'turnoj3' partida.id %}">Pasar turno</a>
+{% endblock %}
