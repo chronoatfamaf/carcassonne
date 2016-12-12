@@ -35,7 +35,10 @@ def unirse_a_partida(request, pk):
     #sino tiene asignado turno se lo asignamos
     if usuario.turno == 0:
         usuario.turno = partida.jugando + 1
+    
     # unimos el usuario a la partida
+    print("usuario.turno en unirse_a_partida")
+    print(usuario.turno)
     usuario.partida = partida
     usuario.save()
     # actualiazmos la cantidad de jugadores que estan jugando la partida
