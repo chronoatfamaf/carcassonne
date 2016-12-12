@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
-from partida.models import Partida
+from partida.models import Partida, Mapa
 from usuario.models import Usuario
 from .forms import FormularioPartida
 
@@ -28,6 +28,8 @@ def crear_partida(request):
         if form.is_valid():
             partida = form.save(commit=False)
             partida.owner = request.user
+            mapa = Mapa.objects.create()
+            partida.mapa = mapa
             partida.save()
             #game_id = str(partida.id)
             return HttpResponseRedirect('/partida/' + str(partida.id))
@@ -46,8 +48,11 @@ def comenzar(request, game):
 @login_required
 def turnoj1(request, game):
     partida = get_object_or_404(Partida, pk=game)
+    mapa1 = partida.mapa
+    mapa = get_object_or_404(Mapa, pk=mapa1.id)
     context = {
-        "partida": partida
+        "partida": partida,
+        "mapa" : mapa,
     }
     return render(request, 'turnoj1.html', context)
 
