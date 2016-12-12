@@ -25,7 +25,6 @@ class Mapa(models.Model):
 	p9 = models.ForeignKey(Pieza, default=1, related_name='p9_content_type')
 
 
-
 class Partida(models.Model):
 	""" Partida """
 	owner = models.ForeignKey(User, null=True, related_name='owner')
@@ -33,6 +32,8 @@ class Partida(models.Model):
 	jugador3 = models.ForeignKey(User, null=True, related_name='j3')
 	jugador4 = models.ForeignKey(User, null=True, related_name='j4')
 	jugador5 = models.ForeignKey(User, null=True, related_name='j5')
+	cantjugadores = models.IntegerField(default=1)
+	totaljugadores = models.IntegerField(default=2)
 	mapa = models.ForeignKey(Mapa, default=1)
 
 

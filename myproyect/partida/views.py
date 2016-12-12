@@ -12,14 +12,15 @@ from .forms import FormularioPartida
 
 @login_required
 def lista_de_partidas(request):
+
     partidas = Partida.objects.all()
     # asignamos a las partidas las cantidad actual de jugadores que estan esperando por jugarlas
-    for partida in partidas:
-        partida.jugando = Usuario.objects.filter(partida=partida).count()
-        partida.save()
-
+    #Partida.objects.all().delete()
+ 
     return render(request, 'lista_de_partidas.html',
                   {'partidas': partidas})
+
+
 
 @login_required
 def crear_partida(request):
@@ -37,6 +38,25 @@ def crear_partida(request):
         form = FormularioPartida()
         
     return render(request, 'crear_partida.html', {'form': form})
+
+@login_required
+def borrar_partida(request, game):
+    partida = get_object_or_404(Partida, pk=game)
+    partida.delete()
+    return HttpResponseRedirect('/home')
+
+@login_required
+def unirse_a_partida(request, game):
+    partida = get_object_or_404(Partida, pk=game)
+    partida.jugador2 = request.user
+
+    # actualiazmos la cantidad de jugadores que estan jugando la partida
+    partida.cantjugadores += 1 
+    partida.save()
+    return render(request, 'comenzar_partida.html',
+                  {'partida': partida})
+
+
 
 @login_required
 def comenzar(request, game):

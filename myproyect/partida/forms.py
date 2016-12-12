@@ -9,7 +9,7 @@ class FormularioPartida(forms.ModelForm):
         # modelo usado para el formulario de Partida en la vista crear_partida
         model = Partida
         # el atributo de Partida que no quiero que aprezca en la view
-        exclude = ('owner', 'mapa','jugador2', 'jugador3', 'jugador4', 'jugador5')
+        exclude = ('owner', 'mapa','jugador2', 'jugador3', 'jugador4', 'jugador5','cantjugadores',)
         
 fields = '__all__'
 

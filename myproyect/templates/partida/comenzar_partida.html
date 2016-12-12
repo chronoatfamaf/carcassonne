@@ -2,5 +2,30 @@
 {% load staticfiles %}
 {% block content %}
   <h2> Partida numero {{ partida.id }} esta por comenzar</h2>
+ 	<p>Jugadores:</p>
+ 	{% if partida.totaljugadores == 2 %}
+ 	<p>{{ partida.owner }}</p>
+ 	<p>{{ partida.jugador2 }}</p>
+ 	{% endif %}
+ 	{% if partida.totaljugadores == 3 %}
+ 	<p>{{ partida.owner }}</p>
+ 	<p>{{ partida.jugador2 }}</p>
+ 	<p>{{ partida.jugador3 }}</p>
+ 	{% endif %}
+ 	{% if partida.totaljugadores == 4 %}
+ 	<p>{{ partida.owner }}</p>
+ 	<p>{{ partida.jugador2 }}</p>
+ 	<p>{{ partida.jugador3 }}</p>
+ 	<p>{{ partida.jugador4 }}</p>
+ 	{% endif %}
+ 	{% if partida.totaljugadores == 5 %}
+ 	<p>{{ partida.owner }}</p>
+ 	<p>{{ partida.jugador2 }}</p>
+ 	<p>{{ partida.jugador3 }}</p>
+ 	<p>{{ partida.jugador4 }}</p>
+ 	<p>{{ partida.jugador5 }}</p>
+ 	{% endif %}
+
   <a class="btn btn-success" href="{% url 'turnoj1' partida.id %}">Comenzar</a>
+  <a class="btn btn-block" href="{% url 'borrar_partida' partida.id %}">Borrar</a>
 {% endblock %}
