@@ -35,7 +35,7 @@ def unirse_a_partida(request, pk):
     #sino tiene asignado turno se lo asignamos
     if usuario.turno == 0:
         usuario.turno = partida.jugando + 1
-    
+
     # unimos el usuario a la partida
     print("usuario.turno en unirse_a_partida")
     print(usuario.turno)
@@ -74,12 +74,20 @@ def jugar_partida(request, pk):
     # asignamos el turno siguiente de la partida
     # es decir, le toca jugar al usuario cuyo usuario.turno == turno
     turno = partida.turnos
-    if turno == partida.cantidad_jugadores:
-        turno = 1
-    else:
-        turno = turno + 1
-    partida.turnos = turno
-    partida.save()
+    # si el turno de current_user es el turno de la partida YA jugado + 1
+    # entonces le toca jugar a current_user
+    # si el turno de la partida es el ultimo entonces le toca al primer jugador (usuario.turno = 1)
+    # por lo que se actualiza el turno de la partida (partida.turnos++)
+    if (current_user.turno == turno+1 or (current_user.turno == 1 and turno == partida.cantidad_jugadores)):
+        if turno == partida.cantidad_jugadores:
+            turno = 1
+        else:
+            turno = turno + 1
+        partida.turnos = turno
+        partida.save()
+    # si no se entra al anterior if, entonces se vuelve a renderizar
+    # el template que habia llamado esta funcion
+    # Todo lo anterior es para que un usuario no pueda saltear turnos actualizando la pag desde el browser
     # Esta consulta devuelve los user de auth asocioados a los usuarios que
     # estan jugando la partida, es para imprimir los nombres
     jugadores = User.objects.filter(usuario__partida=partida)
