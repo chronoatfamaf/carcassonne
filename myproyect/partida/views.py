@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
 from partida.models import Partida
 from usuario.models import Usuario
+from django.contrib.auth.models import User
 from .forms import FormularioPartida
 
 # Create your views here.
@@ -52,14 +53,13 @@ def abandonar_partida(request, pk):
     partida.save()
     return redirect('lista_de_partidas') 
 
-
-
 @login_required
 def jugar_partida(request, pk):
+   # usu = request.user.id
     partida = Partida.objects.get(pk=pk)
-    jugadores = Usuario.objects.filter(partida=partida)
-
-    return render(request,'jugar_partida.html', {jugadores : 'jugadores'}) 
+    #jugadores = Usuario.objects.filter(partida=partida)
+    jugadores = User.objects.filter(usuario__partida=partida)
+    return render(request,'jugar_partida.html', {'jugadores' : jugadores}) 
 
 @login_required
 def crear_partida(request):
