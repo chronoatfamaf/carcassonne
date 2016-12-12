@@ -17,7 +17,7 @@ class Usuario(models.Model):
     mail = models.EmailField(max_length=70, default='email')
     partida = models.ForeignKey(
         Partida, on_delete=models.CASCADE, blank=True, null=True)
-
+    turno = models.IntegerField( default=0)
 
     def __string__(self):
         return str(self.nombre)

@@ -28,6 +28,13 @@ def lista_de_partidas(request):
 def unirse_a_partida(request, pk):
     partida = Partida.objects.get(pk=pk)
     usuario = Usuario.objects.get(usuario=request.user.id)
+    # asignamos el turno del actual jugador como la cantidad de jugadores jugando (esperando jugar) mas 1
+    # ya que si estamos en esta funcion se cumple partida.jugando < partida.cantidad_jugadores
+    # y el turno se asgina por orden de llegada, es decir, el que se unio ultimo a la partida juega ultimo
+    # y asi
+    #sino tiene asignado turno se lo asignamos
+    if usuario.turno == 0:
+        usuario.turno = partida.jugando + 1
     # unimos el usuario a la partida
     usuario.partida = partida
     usuario.save()
@@ -45,8 +52,10 @@ def unirse_a_partida(request, pk):
 def abandonar_partida(request, pk):
     partida = Partida.objects.get(pk=pk)
     usuario = Usuario.objects.get(usuario=request.user.id)
-    # unimos el usuario a la partida
+    # desunimos el usuario a la partida
     usuario.partida = None
+    # reseteamos el turno del usuario
+    usuario.turno = 0
     usuario.save()
     # actualiazmos la cantidad de jugadores que estan jugando la partida
     partida.jugando = Usuario.objects.filter(partida=partida).count()
@@ -55,11 +64,37 @@ def abandonar_partida(request, pk):
 
 @login_required
 def jugar_partida(request, pk):
-   # usu = request.user.id
+    current_user = Usuario.objects.get(usuario=request.user.id)
     partida = Partida.objects.get(pk=pk)
-    #jugadores = Usuario.objects.filter(partida=partida)
+    # devuelve los usuarios que estan jugando los partidas
+    usuarios = Usuario.objects.filter(partida=partida)
+    # asignamos el turno siguiente de la partida
+    # es decir, le toca jugar al usuario cuyo usuario.turno == turno
+    turno = partida.turnos
+    if turno == partida.cantidad_jugadores:
+        turno = 1
+    else:
+        turno = turno + 1
+    partida.turnos = turno
+    partida.save()
+    # Esta consulta devuelve los user de auth asocioados a los usuarios que
+    # estan jugando la partida, es para imprimir los nombres
     jugadores = User.objects.filter(usuario__partida=partida)
-    return render(request,'jugar_partida.html', {'jugadores' : jugadores}) 
+    print("JUGADORES")
+    print(jugadores)
+    print("TURNO")
+    print(turno)
+    print("current_user.turno")
+    print(current_user.turno)
+    context = {
+        'jugadores' : jugadores,
+        'current_user' : current_user,
+        'turno' : turno
+    }
+    
+    return render(request,'jugar_partida.html', context) 
+
+
 
 @login_required
 def crear_partida(request):

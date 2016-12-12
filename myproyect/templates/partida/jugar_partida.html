@@ -8,10 +8,18 @@
   <table class="table">
     {% for jugador in jugadores%}
       <tr> 
-          <td> ALGOOO {{ jugador }}</td>
+          <td> nombre de jugador: {{ jugador }}</td>
       </tr>
     {% empty %}
       <p>Error al imprimir nombre de jugadores : / </p>
     {% endfor %}
   </table>
+  <!-- -->
+
+{% if current_user.turno == turno %}
+  <p> Tu turno <p/>
+{% endif %}
+
+
+
 {% endblock %}
