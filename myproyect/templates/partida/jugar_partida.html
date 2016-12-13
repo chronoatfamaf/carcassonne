@@ -18,6 +18,12 @@
 
 {% if current_user.turno == turno %}
   <p> Tu turno <p/>
+
+  <form name="ingresar cuit" action="{% url 'jugar_partida' pasar=1 %}" method="POST">
+    {% csrf_token %}
+        <input type="submit" value="Pasar">
+  </form>
+   <!-- <li><a href="{% url 'jugar_partida' pasar=1 %}"> Pasar </a></li> -->
 {% endif %}
 
 

@@ -11,6 +11,7 @@ class Partida(models.Model):
 	# default uno porque el usuario que crea la partida la juega tambien
 	jugando = models.IntegerField( default=1)
 	turnos = models.IntegerField(default=1)
+	pasar = models.IntegerField( default=0)
     
 
 

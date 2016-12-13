@@ -14,6 +14,8 @@ def lista_de_partidas(request):
     usuario = Usuario.objects.get(usuario=request.user.id)
     # si estaba jugando una partida ya no lo esta asi que lo desunimos de la partida que estaba unido
     usuario.partida = None
+    usuario.turno = 0
+    usuario.save()
     partidas = Partida.objects.all()
     # asignamos a las partidas las cantidad actual de jugadores que estan esperando por jugarlas
     for partida in partidas:
@@ -33,6 +35,8 @@ def unirse_a_partida(request, pk):
     # y el turno se asgina por orden de llegada, es decir, el que se unio ultimo a la partida juega ultimo
     # y asi
     #sino tiene asignado turno se lo asignamos
+    print("usuario.turno unirse_a_partida ANTEs")
+    print(usuario.turno)
     if usuario.turno == 0:
         usuario.turno = partida.jugando + 1
 
@@ -47,7 +51,7 @@ def unirse_a_partida(request, pk):
     if partida.jugando != partida.cantidad_jugadores:
         return render(request,'unirse_a_partida.html', {partida : 'partida'})
     else:
-        return redirect('jugar_partida', pk=partida.pk) 
+        return redirect('jugar_partida', pasar=partida.pasar) 
 
 
 
@@ -66,37 +70,34 @@ def abandonar_partida(request, pk):
     return redirect('lista_de_partidas') 
 
 @login_required
-def jugar_partida(request, pk):
+def jugar_partida(request, pasar):
     current_user = Usuario.objects.get(usuario=request.user.id)
-    partida = Partida.objects.get(pk=pk)
+    partida = current_user.partida
     # devuelve los usuarios que estan jugando los partidas
     usuarios = Usuario.objects.filter(partida=partida)
-    # asignamos el turno siguiente de la partida
-    # es decir, le toca jugar al usuario cuyo usuario.turno == turno
+    # FLAG PASAR podria ser util sino me sale implementar de esta forma esta funcion
+    pasar = 0
+    print("current_user.turno")
+    print(current_user.turno)
+    print("TURNO ANTEs")
+    print(partida.turnos)
+    #if current_user.turno == partida.turnos + 1 or (current_user.turno == 1 and partida.turnos == 3):
+    if current_user.turno == partida.turnos:
+        if request.method == 'POST':
+            if partida.turnos < partida.cantidad_jugadores:
+                partida.turnos = partida.turnos + 1
+            else:
+                partida.turnos = 1
+            partida.save()
     turno = partida.turnos
-    # si el turno de current_user es el turno de la partida YA jugado + 1
-    # entonces le toca jugar a current_user
-    # si el turno de la partida es el ultimo entonces le toca al primer jugador (usuario.turno = 1)
-    # por lo que se actualiza el turno de la partida (partida.turnos++)
-    if (current_user.turno == turno+1 or (current_user.turno == 1 and turno == partida.cantidad_jugadores)):
-        if turno == partida.cantidad_jugadores:
-            turno = 1
-        else:
-            turno = turno + 1
-        partida.turnos = turno
-        partida.save()
+    print("TURNO DESPUES")
+    print(turno)
     # si no se entra al anterior if, entonces se vuelve a renderizar
     # el template que habia llamado esta funcion
     # Todo lo anterior es para que un usuario no pueda saltear turnos actualizando la pag desde el browser
     # Esta consulta devuelve los user de auth asocioados a los usuarios que
     # estan jugando la partida, es para imprimir los nombres
     jugadores = User.objects.filter(usuario__partida=partida)
-    print("JUGADORES")
-    print(jugadores)
-    print("TURNO")
-    print(turno)
-    print("current_user.turno")
-    print(current_user.turno)
     context = {
         'jugadores' : jugadores,
         'current_user' : current_user,
