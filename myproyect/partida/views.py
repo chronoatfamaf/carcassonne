@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import JsonResponse
-from partida.models import Partida, Mapa
+from partida.models import Partida, Mapa, Pieza
 from usuario.models import Usuario
 from .forms import FormularioPartida
 
@@ -53,16 +53,37 @@ def unirse_a_partida(request, game):
     # actualiazmos la cantidad de jugadores que estan jugando la partida
     partida.cantjugadores += 1 
     partida.save()
-    return render(request, 'comenzar_partida.html',
-                  {'partida': partida})
+    owner = 'no'
+    if partida.owner == request.user:
+        owner = 'si'
+    context = {
+        'partida' : partida,
+        'owner' : owner,
+    }
+    return render(request, 'comenzar_partida.html', context)
 
 
 
 @login_required
 def comenzar(request, game):
     partida = get_object_or_404(Partida, pk=game)
-    return render(request, 'comenzar_partida.html',
-                  {'partida': partida})
+    mapa = get_object_or_404(Mapa, pk=partida.mapa.id)
+    mapa.p1= get_object_or_404(Pieza, pk=1)
+    mapa.p2= get_object_or_404(Pieza, pk=1)
+    mapa.p3= get_object_or_404(Pieza, pk=1)
+    mapa.p4= get_object_or_404(Pieza, pk=1)
+    mapa.p5= get_object_or_404(Pieza, pk=2)
+    mapa.p6= get_object_or_404(Pieza, pk=1)
+    mapa.p7= get_object_or_404(Pieza, pk=1)
+    mapa.p8= get_object_or_404(Pieza, pk=1)
+    mapa.p9= get_object_or_404(Pieza, pk=1)
+    mapa.save()
+    owner = 'si'
+    context = {
+        'partida' : partida,
+        'owner' : owner,
+    }
+    return render(request, 'comenzar_partida.html', context)
 
 
 @login_required
@@ -70,6 +91,7 @@ def turnoj1(request, game):
     partida = get_object_or_404(Partida, pk=game)
     mapa1 = partida.mapa
     mapa = get_object_or_404(Mapa, pk=mapa1.id)
+
     context = {
         "partida": partida,
         "mapa" : mapa,

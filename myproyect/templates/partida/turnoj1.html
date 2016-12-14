@@ -3,8 +3,28 @@
 {% block content %}
   <h2> Partida numero {{ partida.id }} </h2>
   <h3>Turno del jugador {{ partida.owner }}</h3>
-  {{ mapa.id }}
-  {{ mapa.image.url }}
-  <img src="{ mapa.dos }" height="500" width="500" class="img-responsive img-rounded" alt="Carcassonne"/>
-  <a class="btn btn-danger" href="{% url 'turnoj2' partida.id %}">Pasar turno</a>
+<div class="container-fluid">
+	<div class="row">
+		<tr> 
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p1.path}}"/></td>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p2.path}}"/></td>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p3.path}}"/></td>
+		</tr>
+	</div>
+	<div class="row">
+		<tr>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p4.path}}"/></td>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p5.path}}"/></td>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p6.path}}"/></td>
+		</tr>
+	</div>
+	<div class="row">
+		<tr>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p7.path}}"/></td>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p8.path}}"/></td>
+		  <td><img class="img-responsive" height="100" width="100" alt="not found" src="{{mapa.p9.path}}"/></td>
+		</tr>
+	</div>
+  	<a class="btn btn-danger" href="{% url 'turnoj2' partida.id %}">Pasar turno</a>
+</div>
 {% endblock %}

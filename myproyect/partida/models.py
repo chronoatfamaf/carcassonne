@@ -5,12 +5,17 @@ from django.contrib.auth.models import User
 
 class Pieza(models.Model):
 
-	#imagen = models.ImageField(path="../piezas", match="vacio.png", recursive=True)
-	lado0 = models.CharField(max_length=15, default="Granja")
-	lado1 = models.CharField(max_length=15, default="Granja")
-	lado2 = models.CharField(max_length=15, default="Granja")
-	lado3 = models.CharField(max_length=15, default="Granja")
+	nombre = models.CharField(max_length=15, default='Vacio')
+	path = models.CharField(max_length=50, default = '../../../static/piezas/vacio.png')
+	lado0 = models.CharField(max_length=15, default="Vacio")
+	lado1 = models.CharField(max_length=15, default="Vacio")
+	lado2 = models.CharField(max_length=15, default="Vacio")
+	lado3 = models.CharField(max_length=15, default="Vacio")
+	seguidor = models.BooleanField(default=False)
+	donde_esta_el_seguidor = models.CharField(max_length=15, default='Vacio')#Granja, Ciudad, etc
 
+	def __string__(self):
+		return str(self.nombre)
 
 class Mapa(models.Model):
 

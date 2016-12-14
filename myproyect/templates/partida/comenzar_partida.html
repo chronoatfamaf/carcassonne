@@ -25,7 +25,8 @@
  	<p>{{ partida.jugador4 }}</p>
  	<p>{{ partida.jugador5 }}</p>
  	{% endif %}
-
+  {% if owner == 'si'%}
   <a class="btn btn-success" href="{% url 'turnoj1' partida.id %}">Comenzar</a>
-  <a class="btn btn-block" href="{% url 'borrar_partida' partida.id %}">Borrar</a>
+  <a class="btn btn-danger" href="{% url 'borrar_partida' partida.id %}">Borrar</a>
+  {% endif %}
 {% endblock %}
