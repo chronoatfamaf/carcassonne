@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.http import JsonResponse
 from partida.models import Partida
 from usuario.models import Usuario
 from django.contrib.auth.models import User
 from .forms import FormularioPartida
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -25,7 +26,6 @@ def lista_de_partidas(request):
  
     return render(request, 'lista_de_partidas.html',
                   {'partidas': partidas})
-
 @login_required
 def unirse_a_partida(request, pk):
     partida = Partida.objects.get(pk=pk)
@@ -51,7 +51,7 @@ def unirse_a_partida(request, pk):
     if partida.jugando != partida.cantidad_jugadores:
         return render(request,'unirse_a_partida.html', {partida : 'partida'})
     else:
-        return redirect('jugar_partida', pasar=partida.pasar) 
+        return redirect('jugar_partida') 
 
 
 
@@ -70,7 +70,63 @@ def abandonar_partida(request, pk):
     return redirect('lista_de_partidas') 
 
 @login_required
-def jugar_partida(request, pasar):
+def esperar_turno(request, pk):
+    current_user = Usuario.objects.get(usuario=request.user.id)
+    user = User.objects.get(usuario=current_user)
+    turno = current_user.partida.turnos
+
+    #if turno == current_user.turno:
+     #   return redirect('jugar_partida', pasar=current_user.pk) 
+    context = {
+        'turno' : turno,
+        'current_user' : current_user,
+        'user' : user
+    }
+    print("EN ESPERAR TURNO")
+    print("current_user turno")
+    print(current_user.turno)
+    print("partida turno")
+    print(current_user.partida.turnos)
+    return render(request,'esperar_turno.html', context) 
+    
+
+@login_required
+def jugar_partida(request):
+    current_user = Usuario.objects.get(usuario=request.user.id)
+    partida = current_user.partida
+    # devuelve los usuarios que estan jugando los partidas
+    usuarios = Usuario.objects.filter(partida=partida)
+    flag = 0
+    print("current_user.turno")
+    print(current_user.turno)
+    print("TURNO ANTEs")
+    print(partida.turnos    )
+    if current_user.turno == partida.turnos:
+        if request.method == 'POST':
+            print("HICE POST")
+            if partida.turnos < partida.cantidad_jugadores:
+                partida.turnos = partida.turnos + 1
+            else:
+                partida.turnos = 1
+            partida.save()
+            flag = 1
+
+    turno = partida.turnos
+    print("TURNO DESPUES")
+    print(turno)
+    jugadores = User.objects.filter(usuario__partida=partida)
+    context = {
+        'jugadores' : jugadores,
+        'current_user' : current_user,
+        'turno' : turno
+    }
+    if flag == 1:
+        return redirect('jugar_partida')
+        
+    return render(request,'jugar_partida.html', context) 
+
+@login_required
+def jugar_partida2(request):
     current_user = Usuario.objects.get(usuario=request.user.id)
     partida = current_user.partida
     # devuelve los usuarios que estan jugando los partidas
@@ -82,13 +138,7 @@ def jugar_partida(request, pasar):
     print("TURNO ANTEs")
     print(partida.turnos)
     #if current_user.turno == partida.turnos + 1 or (current_user.turno == 1 and partida.turnos == 3):
-    if current_user.turno == partida.turnos:
-        if request.method == 'POST':
-            if partida.turnos < partida.cantidad_jugadores:
-                partida.turnos = partida.turnos + 1
-            else:
-                partida.turnos = 1
-            partida.save()
+    #if current_user.turno == partida.turnos:
     turno = partida.turnos
     print("TURNO DESPUES")
     print(turno)
@@ -103,10 +153,9 @@ def jugar_partida(request, pasar):
         'current_user' : current_user,
         'turno' : turno
     }
-    
-    return render(request,'jugar_partida.html', context) 
-
-
+    if current_user.turno == partida.turnos:
+        return render(request,'jugar_partida.html', context)
+    return render(request,'jugar_partida2.html',context)
 
 @login_required
 def crear_partida(request):

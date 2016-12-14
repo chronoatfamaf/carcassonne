@@ -19,13 +19,19 @@
 {% if current_user.turno == turno %}
   <p> Tu turno <p/>
 
-  <form name="ingresar cuit" action="{% url 'jugar_partida' pasar=1 %}" method="POST">
+  <form name="ingresar cuit" action="{% url 'jugar_partida' %}" method="POST">
     {% csrf_token %}
-        <input type="submit" value="Pasar">
+    Ingrese un numero de ficha: <input type="number" name="ficha">
+        <input type="submit" value="Colocar">
   </form>
-   <!-- <li><a href="{% url 'jugar_partida' pasar=1 %}"> Pasar </a></li> -->
 {% endif %}
 
+<button onclick="myFunction()">Actualizar</button>
 
+<script>
+function myFunction() {
+    location.reload(true);
+}
+</script>
 
 {% endblock %}
