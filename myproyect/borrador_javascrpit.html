@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		Borrador de javascript para tratar mostrar el mapa correctamente </br>
+
+	</head>
+	<h1 onclick="this.innerHTML = 'Ooops!'">Click on this text!</h1>
+	<button onclick="displayDate()">Try it</button>
+	<body>
+		<script>
+		var cien = 100;
+		function duplicar_numero (numero) {
+			return 2*numero;
+		}
+
+		function Create2DArray(rows) {
+  			var arr = [];
+  			for (var i=0;i<rows;i++) {
+     			arr[i] = [];
+  			}
+  			return arr;
+		}
+		// a cada arr[] le puedo agregar la cantidad de elementos que quiera
+		// es decir, puedo crear una matriz general con tamaños cualquiera de filas
+		// y columnas 
+		function crear_matriz(filas) {
+  			var arr = [];
+  			for (var i=0;i<filas;i++) {
+     			arr[i] = [];
+  			}
+  			return arr;
+		}
+		var matriz = crear_matriz(5);
+		function setear_matriz (matriz, columna) {
+			var N = matriz.length;
+			for (var i = 0; i < N; i++) {
+				matriz[i] = columna;
+			};
+			return matriz;
+		}
+		function array_print (arr) {
+			var N = arr.length;
+			for (var i = 0 ; i < N; i++) {
+				document.write(' ' + arr[i]);
+			};
+		}
+		function print_matriz (matriz) {
+			var N = matriz.length;
+			for (var i = 0; i < N; i++) {
+				matriz[i] =  array_print(columna);
+				document.write("</br>");
+			};
+		}
+        var pag =' <a href="www.google.com.ar">Ir a google</a>';
+		var tupla = [5,6]
+		function snd_valor_tupl(tupla) {
+			//document.write(tupla[1]);
+			return tupla[1];
+		}
+        //<h1 onclick="this.innerHTML = 'Ooops!'>Click on this text!</h1>";
+		var celda = [tupla[0], 2];
+
+
+
+		var columna = [pag, 2, 3, 4,"ajo"];
+		matriz = setear_matriz(matriz,columna);
+
+		print_matriz(matriz)
+
+
+			document.write("</br>CELDA " + celda);
+		</script>
+	</body>
+
+</html>
