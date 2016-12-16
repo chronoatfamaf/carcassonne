@@ -27,7 +27,6 @@ def partidacreada(request):
   P = Partida(nombre = request.POST['nombre'],
                 fechaInicio = str(timezone.now()), esFinalizado = 'N', piezaEnJuego=1)
   P.save()
-   #Cargamos el template o plantilla
   template = loader.get_template('JugarPartida/PartidaCreada.html')
 
   context = {
@@ -35,5 +34,19 @@ def partidacreada(request):
   'esFinalizado' : P.esFinalizado,
   'fechaInicio' : P.fechaInicio,
   'partidaid' : P.id
+  }
+  return HttpResponse(template.render(context, request))
+
+def ponerpieza(request, partidaid):
+  template = loader.get_template('JugarPartida/PonerPieza.html')
+  partida = Partida.objects.get(pk=partidaid) 
+  y = partida.piezaEnJuego
+  if (y < 10):
+    pieza ='0' + str(y) 
+  else :
+    pieza = str(y)
+  context = {
+  'PiezaAPoner' : pieza,
+  'partidaid' : partidaid
   }
   return HttpResponse(template.render(context, request))
