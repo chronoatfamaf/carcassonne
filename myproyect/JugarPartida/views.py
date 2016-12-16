@@ -53,7 +53,6 @@ def ponerpieza(request, partidaid):
   return HttpResponse(template.render(context, request))
 
 def rotarpieza(request,partidaid, rotsentido , imagen):
-  print imagen
   im = Image.open( "JugarPartida/static/JugarPartida/" + imagen + ".png")
   im.load()
 
@@ -71,3 +70,30 @@ def rotarpieza(request,partidaid, rotsentido , imagen):
   }
   return HttpResponse(template.render(context, request))
 
+
+def incrustarpieza(request, partidaid, idmapapieza , imagen):
+  context = {}   
+  im = Image.open( "JugarPartida/static/JugarPartida/" +imagen + ".png")
+  im.load()
+
+  # cambiar por un "for" que itere en la tabla de piezas para buscar el nombre de 
+  # imagen , si es que se repite ya que es unico dicho nombre
+  partida = Partida.objects.get(pk=partidaid) 
+  try:
+    existe =  Image.open( "JugarPartida/static/JugarPartida/" + idmapapieza + ".png")
+  except IOError :
+    im.save("JugarPartida/static/JugarPartida/" + idmapapieza + ".png")  
+    partida.piezaEnJuego = partida.piezaEnJuego + 1
+  else:
+    context['AnuncioDeError'] = 'Elija una celda libre para depositar la pieza'
+  template = loader.get_template('JugarPartida/PonerPieza.html')
+  y = partida.piezaEnJuego
+  partida.save()
+  if y < 10:
+    pieza ='0' + str(y) 
+  else :
+    pieza = str(y)
+
+  context ['PiezaAPoner'] = pieza
+  context ['partidaid'] = partidaid
+  return HttpResponse(template.render(context, request))
