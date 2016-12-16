@@ -35,6 +35,19 @@ def partidacreada(request):
   P.save()
   template = loader.get_template('JugarPartida/PartidaCreada.html')
 
+  y = P.piezaEnJuego
+
+  if (y < 10):
+    PiezaAPoner ='0' + str(y) 
+  else :
+    PiezaAPoner = str(y)
+  im = Image.open( "JugarPartida/static/JugarPartida/" + PiezaAPoner + ".png")
+  im.load()
+  # Modificar segun el numero de columnas o filas que se tenga 
+  CeldaDelCentroDelMapa = '190'
+  im.save("JugarPartida/static/JugarPartida/" + CeldaDelCentroDelMapa + ".png")  
+  P.piezaEnJuego = P.piezaEnJuego + 1
+  P.save()
   context = {
   'nombre' : P.nombre,
   'esFinalizado' : P.esFinalizado,
