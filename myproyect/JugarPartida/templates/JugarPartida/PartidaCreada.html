@@ -1,0 +1,39 @@
+{% extends 'base.html'%}
+{% block content %}
+{% load static %}
+{% static "" as UrlDeStatic %}
+{% url "" as UrlDeUrlConfig %}
+<body background="{% static "JugarPartida/Bronce.jpg"%}">
+<CENTER>
+<h1>Crear Partida</h1>
+</CENTER>
+
+<CENTER>
+<table  border="10" cellpadding="10" cellspacing="3" width="50%">
+   <tr width="50%" bgcolor="7FFFD4">
+    <th>Detalles del juego</th>
+    <th>Descripcion</th>
+  </tr>
+  <tr>
+    <td>nombre</td>
+    <td>{{nombre}}</td>
+  </tr>
+  <tr>
+    <td>Partida id</td>
+    <td>{{partidaid}}</td>
+  </tr>
+   <tr>
+    <td>fechaInicio</td>
+    <td>{{fechaInicio}}</td>
+  </tr>
+   <tr>
+    <td>esFinalizado</td>
+    <td>{{esFinalizado}}</td>
+  </tr>  
+</table>
+</CENTER>
+  <BR>
+   <CENTER><a HREF = "{{UrlDeUrlConfig}}/partida/ponerpieza/{{partidaid}}"> Iniciar Partida </a> </CENTER>
+
+{% endblock content %}
+

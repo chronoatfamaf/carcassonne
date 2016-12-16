@@ -1,0 +1,40 @@
+<html>
+<HEAD>  
+{% load static %}
+{% static "" as baseUrl %}
+
+   <FIELDSET BACKGROUND = "{% static "JugarPartida/Bronce.jpg" %}" bgcolor="#800000">
+       <CENTER>
+          <H1> 
+            <U>
+              <I>
+                <BIG bgcolor="#800000">
+                 <span style="color: #2b2301;"> <BIG>C</BIG>arcassonne</span>
+                </BIG>
+              </I>
+            </U>
+          </H1>
+      </CENTER>
+   </FIELDSET>
+</HEAD>
+<body>
+
+
+<DIV background="{% static "JugarPartida/FondoCastillos.jpg"%}">
+
+
+
+{% block content %}
+
+{% endblock %}
+
+</DIV>
+
+<DIV>
+
+</DIV>
+
+
+</body>
+</html>
+
