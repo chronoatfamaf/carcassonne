@@ -41,6 +41,7 @@ def ponerpieza(request, partidaid):
   template = loader.get_template('JugarPartida/PonerPieza.html')
   partida = Partida.objects.get(pk=partidaid) 
   y = partida.piezaEnJuego
+
   if (y < 10):
     pieza ='0' + str(y) 
   else :
