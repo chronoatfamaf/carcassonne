@@ -89,6 +89,7 @@ def incrustarpieza(request, partidaid, idmapapieza , imagen):
   template = loader.get_template('JugarPartida/PonerPieza.html')
   y = partida.piezaEnJuego
   partida.save()
+
   if y < 10:
     pieza ='0' + str(y) 
   else :
