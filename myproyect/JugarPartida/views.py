@@ -51,3 +51,23 @@ def ponerpieza(request, partidaid):
   'partidaid' : partidaid
   }
   return HttpResponse(template.render(context, request))
+
+def rotarpieza(request,partidaid, rotsentido , imagen):
+  print imagen
+  im = Image.open( "JugarPartida/static/JugarPartida/" + imagen + ".png")
+  im.load()
+
+  if rotsentido == 'izq' :
+    im = im.rotate(90, 0, 0)
+  else :
+    im = im.rotate(270, 0, 0)
+
+  im.save("JugarPartida/static/JugarPartida/" + imagen + ".png")
+  template = loader.get_template('JugarPartida/PonerPieza.html')
+    
+  context = {
+  'PiezaAPoner' : imagen,
+  'partidaid' : partidaid
+  }
+  return HttpResponse(template.render(context, request))
+
