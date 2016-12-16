@@ -18,6 +18,15 @@ def partidacreada(request):
   for x in xrange(0, cantJug):
     J = Jugador(nombre=nombreJugadores[x])
     J.save()
+
+  #cargo las celdas
+  for y in xrange(1, 400):
+    if y < 10:
+      Celda(esDescartada=False, imagenAsociada ='0' + str(y) + '.png' )
+    else :
+      Pieza(esDescartada=False, imagenAsociada = str(y) + '.png' )
+
+  # Cargo las piezas
   for y in xrange(1, 72):
     if y < 10:
       Pieza(esDescartada=False, imagenAsociada ='0' + str(y) + '.png' )

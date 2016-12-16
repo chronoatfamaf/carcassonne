@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% block content %}
+{% load static %}
+<BODY>
+<h1><CENTER>Cuenta creada</CENTER></h1>
+<CENTER>
+<figure>
+  <img src="{% static "Usuario/Bronce.jpg" %}" alt="My image" width="500" height="250">
+</figure>
+</CENTER>
+<P> Bienvenido a Carcassone {{NombreDeUsuario}}</P>
+
+<A HREF = {% url "home" %}> Ir a Home </A>
+</BODY>
+{%endblock content%}
+
