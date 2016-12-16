@@ -9,7 +9,10 @@
 <HEAD>
 </HEAD>
 
-<BODY onload="document.getElementById('A1').focus();">
+  <script>
+ var celda = ' <TH> <a href= \'{{UrlDeUrlConfig}}/partida/{{partidaid}}/incrustarpieza/005/{{PiezaAPoner}}\' > <img src=\'{{UrlDeStatic}}/JugarPartida/005.png\' name="Celda005" width="100" height="100" id="Celda005" onerror="this.src=\'{{UrlDeStatic}}/JugarPartida/IniciarJuego.jpg\';"> </a></TH>';
+document.write(celda);
+  </script>
 
 <CENTER>
 <table  border="6" cellpadding="1" cellspacing="3" width="50%">

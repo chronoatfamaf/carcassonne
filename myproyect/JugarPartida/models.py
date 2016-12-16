@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Jugador(models.Model):
-  nombre = models.CharField(max_length=20, unique=True)
+  nombre = models.CharField(max_length=20)
   puntaje = models.IntegerField(default=0)
   ranking = models.IntegerField(default=0)
   posicion = models.IntegerField(default=0)
@@ -30,11 +30,12 @@ class Pieza(models.Model):
 class Celda(models.Model):
   imagenPieza = models.CharField(default='N', max_length=20)
   esOcupada = models.BooleanField(default =False)
-  piezaid = models.ForeignKey(Pieza, on_delete=models.CASCADE)
+  piezaid = models.ForeignKey(Pieza, on_delete=models.CASCADE, blank=True ,null=True)
   nombreDeCelda = models.IntegerField(default = 1, unique = True)
 
 
 class Partida(models.Model):
+   
    nombre = models.CharField(max_length=200)
    esFinalizado = models.CharField(max_length=1)
    fechaInicio = models.CharField(max_length=50)

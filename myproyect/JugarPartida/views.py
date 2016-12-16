@@ -5,7 +5,7 @@ import os
 from django.utils import timezone
 from django.contrib.auth import authenticate, login
 from PIL import Image
-from .models import Partida, Jugador, Pieza
+from .models import Partida, Jugador, Pieza, Celda
 
 def crearpartida(request):
   template = loader.get_template('JugarPartida/CrearPartida.html')
@@ -14,17 +14,14 @@ def crearpartida(request):
 
 def partidacreada(request):
   nombreJugadores = ['Mateo', 'Juan', 'Pedro', 'Marcos', 'Esteban']
-  cantJug = int(request.POST['numeromaximodejugadores'][0])
+  cantJug = int(request.POST.get('numerodejugadores', '0'))
   for x in xrange(0, cantJug):
     J = Jugador(nombre=nombreJugadores[x])
     J.save()
 
   #cargo las celdas
   for y in xrange(1, 400):
-    if y < 10:
-      Celda(esDescartada=False, imagenAsociada ='0' + str(y) + '.png' )
-    else :
-      Pieza(esDescartada=False, imagenAsociada = str(y) + '.png' )
+      Celda()
 
   # Cargo las piezas
   for y in xrange(1, 72):
