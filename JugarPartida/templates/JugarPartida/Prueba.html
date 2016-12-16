@@ -1,0 +1,42 @@
+
+
+
+{% load static %}
+
+{% static "" as baseUrl %}
+{% url "" as Jehova %}
+<HEAD>
+
+</HEAD>
+
+<BODY>
+
+
+<CENTER>
+<table  border="10" cellpadding="10" cellspacing="3" width="50%">
+   <tr width="50%" bgcolor="7FFFD4">
+    <th>Coordenadas</th>
+    <th>1</th>
+    <th>2</th>
+   </tr>
+   <tr>
+    <th>1</th>
+    <TH>
+       <a href= '{{Jehova}}/partida/incrustarpieza/{{PiezaASacar}}/{{PiezaAPoner}}' >
+           <img src='{{baseUrl}}/JugarPartida/{{PiezaASacar}}.jpeg' name="Pieza1" width="100" height="100" id="Pieza1">
+       </a>
+    </TH>
+    <TH><img src='{{baseUrl}}/JugarPartida/mapapiezab.jpeg' name="Pieza2" width="100" height="100" id="Pieza2"></TH>
+   </tr>
+</table>
+</CENTER>
+<P> <CENTER> Rotar pieza </CENTER>
+</P>
+
+
+<CENTER><img src='{{baseUrl}}/JugarPartida/{{PiezaAPoner}}.jpeg' name="Pieza" width="100" height="100" id="Pieza"></CENTER>
+ <P>
+   <CENTER>
+       <a href= '{{Jehova}}/partida/rotarpieza/izq/imagena' > A izquierda</a> 
+       <a href= '{{Jehova}}/partida/rotarpieza/der/imagena' > A derecha</a></CENTER></P>
+

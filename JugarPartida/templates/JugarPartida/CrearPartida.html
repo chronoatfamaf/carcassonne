@@ -1,0 +1,39 @@
+
+{% extends 'base.html'%}
+
+{% block content %}
+{% load static %}
+<BODY>
+<h1><CENTER>Crear Partida</CENTER></h1>
+
+
+<CENTER>
+<figure>
+  <img src="{% static "JugarPartida/Bronce.jpg" %}" alt="My image" width="500" height="250">
+</figure>
+</CENTER>
+<FIELDSET>
+<FORM action="{% url "partidacreada" %}" method="post">
+ {% csrf_token %}
+   <BR>
+   Nombre del juego : 
+   <input type="text" name="nombre" id="nombre1" value="Nombre del Juego" />
+   <BR>
+   <BR> Numero de jugadores :
+   <SELECT NAME="numeromaximodejugadores" MULTIPLE >
+      <OPTION>2
+      <OPTION>3
+      <OPTION>4
+      <OPTION>5
+   </SELECT>
+   <BR>
+   <CENTER><INPUT TYPE="RESET" VALUE="Limpiar">
+           <input type="submit" value="Crear" /></CENTER>
+</FORM>
+</FIELDSET>
+
+</BODY>
+{%endblock content%}
+
+
+
