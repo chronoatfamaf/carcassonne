@@ -12,4 +12,36 @@ class Partida(models.Model):
 	jugando = models.IntegerField( default=1)
 	turnos = models.IntegerField(default=1)    
 
+class Mapa(models.Model):
+	# un mapa pertenece a una unica partida
+	# se crea al momento de crear la partida
+	partida = models.ForeignKey( Partida, on_delete=models.CASCADE, blank=True, null=True)
+	# id de la pieza en juego es util para la creacion de la pieza
+	pieza_en_juego = models.IntegerField(default = 10)
 
+class Pieza(models.Model):
+	# una pieza pertenece a un unico mapa
+	# se instancian 72 objetos unicos de pieza en cada partida, cada una con una imagen propia
+	# copiada de una imagen en un directorio que no se puede modificar
+	# los giros de la imagen simplemente hacen girar a la imagen del directorio de la pieza de la partida
+	# ej: static/piezas tiene las piezas 00.png a 71.png y son fijas para todos
+	# se crean simultaneamente partida A, partida B entonces se crean static/partida(idpartida=a) 
+	# static/partida(idpartida=b) y cada uno de estos directorios con una copia de cada imagen de las imagenes
+	# en static/piezas
+	# entonces partida A modifica sus propias imagenes, y lo mismo partida b, por lo que no se entra en conflicto
+	# una vez finalizadas las partidas, se eliminan todos los directorios donde las partidas guardaban las imagenes
+	# no hace falta guardar un atributo para cantidad de giros, por que se gira en la view jugar_partida con la funcion
+	# a implementar girar, y se guarda la imagen el path correspondiente ya girada (se sobre escribe el nombre)
+	mapa = models.ForeignKey( Partida, on_delete=models.CASCADE, blank=True, null=True)
+	pathimagen =  models.CharField(max_length=9, unique = True)
+	pos_x = models.IntegerField( default=1)
+	pos_y = models.IntegerField( default=1)
+	# atributos del juego, podrian faltar 
+	numLadoAsociado = models.IntegerField(default=0)
+	esDescartada = models.BooleanField(default =False)
+	lado1 = models.CharField(max_length=50)
+	lado2 = models.CharField(max_length=50)
+	lado3 = models.CharField(max_length=50)
+	lado4 = models.CharField(max_length=50)
+	esOcupada = models.BooleanField(default =False)
+	nombreDeCelda = models.IntegerField(default = 1, unique = True)
