@@ -6,6 +6,8 @@ from usuario.models import Usuario
 from django.contrib.auth.models import User
 from .forms import FormularioPartida
 from django.http import HttpResponseRedirect
+import json
+import jsonpickle
 
 # Create your views here.
 
@@ -98,23 +100,30 @@ def jugar_partida(request):
             # si el usuario no algun dato del posteo
             # aca deberia ir un elif para controlar que la pos (x,y) es compatible
             # con las demas fichas del juego
+            # aca se crea la ficha y se la asocia al mapa tambien
             if pos_x == '' or pos_y == '':
                 posteo_invalido = 1
             elif partida.turnos < partida.cantidad_jugadores:
                 partida.turnos = partida.turnos + 1
             else:
                 partida.turnos = 1
-    # aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
+    # aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la id azarosamente (de las que todavia no se jugaron)
     piezaid = 23
     turno = partida.turnos
     print("TURNO DESPUES")
     print(turno)
     jugadores = User.objects.filter(usuario__partida=partida)
+    coordenadas = [(0,1,"piezas/12.png")]
+    obj = {"a":1, "b": 2}
+    data = json.dumps(obj)
+    #coordenadas = jsonpickle.encode(coordenadas2)
     context = {
         'jugadores' : jugadores,
         'current_user' : current_user,
         'turno' : turno,
-        'piezaid' : piezaid
+        'piezaid' : piezaid,
+        'coordenadas' : coordenadas,
+        'data' : data
     }
     if hubo_posteo == 1 and posteo_invalido == 0:
         partida.save()

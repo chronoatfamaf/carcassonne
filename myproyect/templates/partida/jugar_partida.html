@@ -85,7 +85,7 @@
                     document.write("</tr>");
                   };
                 }
-
+ 
                 // agrega el elemento a la posicion x,y de la matriz
                 // pre x,y son validos
                 function agregar_elem_matriz(matriz,x,y,elem) {
@@ -97,7 +97,7 @@
 
                 // por defecto el mapa sera de 60x60 aunque es trivial cambiarlo si se quiere
                 function crear_mapa_actualizado(coordenadas) {
-                    var mapa = crear_matriz(60,humo);
+                    var mapa = crear_matriz(5,humo);
                     var pieza = ''
                     for (var i = 0; i < coordenadas.length; i++) {
                       pieza = '<th> <img src="../static/'+coordenadas[i][2]+'"  width="100" height="100" /> </th>';
@@ -108,16 +108,42 @@
                 }
                 // SE LLAMARIA A crear_mapa_actualizado( del tag coordenadas
                 // se imprimiria la matriz resultante
+document.write("holaa");
+var data2 = '{{ data }}';
+//document.write(data2['1']);
 
 
+               /* var coordenadas = '{{coordenadas}}';
+                var current_user = '{{current_user}}';
+                
+                var jugadores = '{{jugadores}}';
+*/
+               // document.write(data2);
+
+                //var mapa = crear_mapa_actualizado(coordenadas);
+
+                //print_matriz(mapa);
+               // var coordenadas2 = [(1,2,"BOCAAAA")];
+                //document.write(coordenadas2);
+//
+                //document.write(coordenadas);
 
                 // codigo para debug
                 var foto = '<th> <img src="../static/piezas/{{piezaid}}.png"  width="100" height="100" /> </th>'
 
                 var nueva_matriz = crear_matriz(5, humo);
-                nueva_matriz = agregar_elem_matriz(nueva_matriz,3,2,foto);
+              nueva_matriz = agregar_elem_matriz(nueva_matriz,3,2,foto);
                 print_matriz(nueva_matriz);
+//var my_var = '{{coordenadas}}';
+var coordenadas = "{{coordenadas|safe}}"; 
+//var coordenadas_obj = JSON.parse(my_var);
+document.write("Esto es una lista deberia ser un objeto");
+document.write(coordenadas);
 
+//var my_var_parsed = jQuery.parseJSON(my_var);
+  //var coordenadas_objeto = jsonpickle.decode(my_var)
+
+//document.write("chauu");
             </script>
             </tr>
         </table>
