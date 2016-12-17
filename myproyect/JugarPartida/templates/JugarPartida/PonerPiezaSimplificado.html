@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+{%extends 'base.html'%}
+{% block content %}
+{% load static %}
+{% static "" as UrlDeStatic %}
+{% url "" as UrlDeUrlConfig %}
+<HEAD>
+    <head>
+ MAPA DISEÑADO PARA TABLA DE 20x20 celdas ya que N = 20, para una tabla ZxZ modificar cada ocurrencia de N por Z
+    </head>
+        <BODY onload="document.getElementById('A1').focus();">
+            <CENTER>
+                <table  border="6" cellpadding="1" cellspacing="3" width="50%">
+                   <tr width="50%" bgcolor="7FFFD4">
+                    <th>Coordenadas</th>
+                        <script>
+                         var N = 20;
+                         // matriz N x N
+                         for (var i = 0; i < N; i++) {
+                             document.write("<th>"+(i+1)+"</th>");
+                         };
+                        </script>
+                    </tr>
+                        <script>
+                        // IMPORTANTE: ASI COMO ESTA EL CODIGO (sabado 17 00:50 branch_juego_avanzado)
+                        // NO HIZO FALTA USAR ZEROFILL, simplemente se hace un for para escribir lo que esta
+                        // en PonerPieza.html  ASI COMO ESTA FUNCIONA, de la otra forma no.
+
+                        // ej 0021 = zeroFill(21,4) 
+                        // 2516 = zeroFill(2516,4)
+                        // 009 = zerofill(9,3)
+                        // sirve para la modificacion del numero que llevara a ref del link a la imagen 
+                        // primer imagen se llama 0001.jpg y la ultima 3599.jpg ya que N=60 
+                        function zeroFill( number, width ) {
+                            width -= number.toString().length;
+                            if ( width > 0 ) {
+                                return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+                            }
+                              return number + ""; // always return a string
+                        }
+                        var N = 20;
+                        var cons = 0;
+                        var num = 0;
+                        var celda = "";
+                         for (var i = 0; i < N; i++) {
+                            document.write("<tr>");
+                             document.write("<th>"+(i+1)+"</th>");
+                            cons = N*i;
+                            for (var j = 0; j < N; j++) {
+                                num = j+1+cons;
+                                elem = zeroFill(num,4);
+                                celda = ' <TH> <a href= \'{{UrlDeUrlConfig}}/partida/{{partidaid}}/incrustarpieza/mapapieza'+num+'/{{PiezaAPoner}}\' > <img src=\'{{UrlDeStatic}}/JugarPartida/mapapieza'+num+'.png\' name="Pieza'+num+'" width="100" height="100" id="Pieza'+num+'" onerror="this.src=\'{{UrlDeStatic}}/JugarPartida/IniciarJuego.jpg\';"> </a></TH>';
+                                //document.write("<th>"+elem+"</th>");
+                                document.write(celda);
+                            };
+                            document.write("</tr>");
+                         };
+
+                         /*
+                         <TH> <a href= '{{UrlDeUrlConfig}}/partida/{{partidaid}}/incrustarpieza/mapapieza2/{{PiezaAPoner}}' ><img src='{{UrlDeStatic}}/JugarPartida/mapapieza2.png' name="Pieza2" width="100" height="100" id="Pieza2" onerror="this.src='{{UrlDeStatic}}/JugarPartida/IniciarJuego.jpg';"></a></TH>
+                         */
+                        </script>
+                </table>
+            </CENTER>
+            <P> 
+                <CENTER> 
+                    {{AnuncioDeError}} 
+                </CENTER> 
+            </P>
+            <P>
+                <CENTER> 
+                    Rotar pieza 
+                </CENTER> 
+            </P>
+            <CENTER>
+                <img src='{{UrlDeStatic}}/JugarPartida/{{PiezaAPoner}}.png' name="Pieza400" width="100" height="100" id="A1">
+            </CENTER>
+            <P>
+                <CENTER>
+                    <a href= '{{UrlDeUrlConfig}}/partida/rotarpieza/{{partidaid}}/izq/{{PiezaAPoner}}' > A izquierda </a> 
+                    <a href= '{{UrlDeUrlConfig}}/partida/rotarpieza/{{partidaid}}/der/{{PiezaAPoner}}' > A derecha </a>
+                </CENTER>
+            </P>
+        </BODY>                
+{%endblock content%}
+</html>
