@@ -75,25 +75,36 @@ def jugar_partida(request):
     partida = current_user.partida
     # devuelve los usuarios que estan jugando los partidas
     usuarios = Usuario.objects.filter(partida=partida)
-    flag = 0
-    invalid_post = 0
+    hubo_posteo = 0
+    posteo_invalido = 0
     print("current_user.turno")
     print(current_user.turno)
     print("TURNO ANTEs")
-    print(partida.turnos    )
+    print(partida.turnos)
     if current_user.turno == partida.turnos:
         if request.method == 'POST':
-            print("HICE POST y postie el numero:")
-            numero = request.POST["ficha"]
-            print(numero)
-            if numero == '':
-                invalid_post = 1
+            hubo_posteo = 1
+            print("HICE POST y postie:")
+            # par (x,y) que describe la posicion de la ficha en el mapa de esta partida
+            pos_x = request.POST["pos_x"]
+            pos_y = request.POST["pos_y"]
+            # cant_giros para saber el grado con el que el usuario quizo girar la imagen (si es que quiso)
+            # ej cant_giros = 5 --> 450 grados
+            # ej cant_giros = 1 --> 90 grados
+            # ej cant_giros = -1 --> 360-90 grados
+            cant_giros = request.POST["cant_giros"]
+            # aca se deberia llamar a la funcion de rotar_imagen
+            print(pos_x,pos_y)
+            # si el usuario no algun dato del posteo
+            # aca deberia ir un elif para controlar que la pos (x,y) es compatible
+            # con las demas fichas del juego
+            if pos_x == '' or pos_y == '':
+                posteo_invalido = 1
             elif partida.turnos < partida.cantidad_jugadores:
                 partida.turnos = partida.turnos + 1
             else:
                 partida.turnos = 1
-            #partida.save()
-            flag = 1
+    # aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
     piezaid = 23
     turno = partida.turnos
     print("TURNO DESPUES")
@@ -105,7 +116,7 @@ def jugar_partida(request):
         'turno' : turno,
         'piezaid' : piezaid
     }
-    if flag == 1 and invalid_post == 0:
+    if hubo_posteo == 1 and posteo_invalido == 0:
         partida.save()
         return redirect('jugar_partida')
         

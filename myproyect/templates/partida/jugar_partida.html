@@ -28,17 +28,19 @@
 
   <form name="ingresar cuit" action="{% url 'jugar_partida' %}" method="POST">
     {% csrf_token %}
-    Ingrese posicion ficha: <input type="number" name="ficha">
+    <p> Ingrese posicion X de la pieza: <input type="number" name="pos_x"> </p>
+    <p>Ingrese posicion Y de la pieza: <input type="number" name="pos_y"> </p>
+    <p>Giros sentido horario (90 grados): <input type="number" name="cant_giros"> </p>
+
         <input type="submit" value="Colocar">
   </form>
 {% endif %}
-
-<button onclick="myFunction()">Actualizar</button>
-
-<script>
-function myFunction() {
-    location.reload(true);
-}
-</script>
-
+<br>
+  <button onclick="myFunction()">Actualizar</button>
+</br>
+    <script>
+    function myFunction() {
+        location.reload(true);
+    }
+    </script>
 {% endblock %}
