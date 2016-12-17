@@ -10,15 +10,9 @@ class Partida(models.Model):
 	# cuando jugando = cantidad_jugadores, la partida i.e juego comienza
 	# default uno porque el usuario que crea la partida la juega tambien
 	jugando = models.IntegerField( default=1)
-	turnos = models.IntegerField(default=1)    
-
-class Mapa(models.Model):
-	# un mapa pertenece a una unica partida
-	# se crea al momento de crear la partida
-	partida = models.ForeignKey( Partida, on_delete=models.CASCADE, blank=True, null=True)
-	# id de la pieza en juego es util para la creacion de la pieza
+	turnos = models.IntegerField(default=1)
 	pieza_en_juego = models.IntegerField(default = 10)
-
+ 
 class Pieza(models.Model):
 	# una pieza pertenece a un unico mapa
 	# se instancian 72 objetos unicos de pieza en cada partida, cada una con una imagen propia
@@ -32,7 +26,7 @@ class Pieza(models.Model):
 	# una vez finalizadas las partidas, se eliminan todos los directorios donde las partidas guardaban las imagenes
 	# no hace falta guardar un atributo para cantidad de giros, por que se gira en la view jugar_partida con la funcion
 	# a implementar girar, y se guarda la imagen el path correspondiente ya girada (se sobre escribe el nombre)
-	mapa = models.ForeignKey( Partida, on_delete=models.CASCADE, blank=True, null=True)
+	partida = models.ForeignKey( Partida, on_delete=models.CASCADE, blank=True, null=True)
 	pathimagen =  models.CharField(max_length=9, unique = True)
 	pos_x = models.IntegerField( default=1)
 	pos_y = models.IntegerField( default=1)
@@ -45,3 +39,8 @@ class Pieza(models.Model):
 	lado4 = models.CharField(max_length=50)
 	esOcupada = models.BooleanField(default =False)
 	nombreDeCelda = models.IntegerField(default = 1, unique = True)
+
+	@classmethod
+	def create(x,y,path,partida):
+		nueva_pieza = Pieza(partida=partida,pos_x=x,pos_y=y,pathimagen=path)
+		return nueva_pieza

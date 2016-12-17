@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.http import JsonResponse
-from partida.models import Partida
+from partida.models import *
 from usuario.models import Usuario
 from django.contrib.auth.models import User
 from .forms import FormularioPartida
 from django.http import HttpResponseRedirect
-
+import os, shutil
 # Create your views here.
 
 
@@ -92,6 +92,7 @@ def jugar_partida(request):
             # ej cant_giros = 5 --> 450 grados
             # ej cant_giros = 1 --> 90 grados
             # ej cant_giros = -1 --> 360-90 grados
+            
             cant_giros = request.POST["cant_giros"]
             # aca se deberia llamar a la funcion de rotar_imagen
             print(pos_x,pos_y)
@@ -106,6 +107,9 @@ def jugar_partida(request):
                 partida.turnos = 1
     # aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
     piezaid = 23
+    partida = current_user.partida
+    partida.pieza_en_juego = piezaid
+    partida.save()
     turno = partida.turnos
     print("TURNO DESPUES")
     print(turno)
@@ -117,6 +121,12 @@ def jugar_partida(request):
         'piezaid' : piezaid
     }
     if hubo_posteo == 1 and posteo_invalido == 0:
+        # creamos la nueva pieza
+        pieza_en_juego = partida.pieza_en_juego
+        path = 'partida'+str(partida.id)+'/'+str(pieza_en_juego)+'.png'
+        nueva_pieza = Pieza(pos_x=pos_x ,pos_y=pos_y ,pathimagen=path)
+        nueva_pieza.partida = partida
+        nueva_pieza.save()
         partida.save()
         return redirect('jugar_partida')
         
@@ -132,7 +142,10 @@ def crear_partida(request):
             partida.save()
             usuario.partida = partida
             usuario.save()
-            #pk = partida.pk
+            path = '../static/' + str(partida.pk)
+            # algo asi.. es decir crear un subdirectorio static/partidapk donde
+            # estan todas las imagenes de las piezas
+            #shutil.copytree('../static/piezas',path)
             return redirect( 'unirse_a_partida',pk=partida.pk)
     else:
         form = FormularioPartida()
