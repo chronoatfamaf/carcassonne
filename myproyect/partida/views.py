@@ -89,7 +89,7 @@ def jugar_partida(request):
                 partida.turnos = 1
             partida.save()
             flag = 1
-
+    piezaid = 23
     turno = partida.turnos
     print("TURNO DESPUES")
     print(turno)
@@ -97,7 +97,8 @@ def jugar_partida(request):
     context = {
         'jugadores' : jugadores,
         'current_user' : current_user,
-        'turno' : turno
+        'turno' : turno,
+        'piezaid' : piezaid
     }
     if flag == 1:
         return redirect('jugar_partida')
