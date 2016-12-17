@@ -76,18 +76,23 @@ def jugar_partida(request):
     # devuelve los usuarios que estan jugando los partidas
     usuarios = Usuario.objects.filter(partida=partida)
     flag = 0
+    invalid_post = 0
     print("current_user.turno")
     print(current_user.turno)
     print("TURNO ANTEs")
     print(partida.turnos    )
     if current_user.turno == partida.turnos:
         if request.method == 'POST':
-            print("HICE POST")
-            if partida.turnos < partida.cantidad_jugadores:
+            print("HICE POST y postie el numero:")
+            numero = request.POST["ficha"]
+            print(numero)
+            if numero == '':
+                invalid_post = 1
+            elif partida.turnos < partida.cantidad_jugadores:
                 partida.turnos = partida.turnos + 1
             else:
                 partida.turnos = 1
-            partida.save()
+            #partida.save()
             flag = 1
     piezaid = 23
     turno = partida.turnos
@@ -100,7 +105,8 @@ def jugar_partida(request):
         'turno' : turno,
         'piezaid' : piezaid
     }
-    if flag == 1:
+    if flag == 1 and invalid_post == 0:
+        partida.save()
         return redirect('jugar_partida')
         
     return render(request,'jugar_partida.html', context) 
