@@ -43,4 +43,67 @@
                   location.reload(true);
             }
         </script>
+
+
+
+        <table  border="6" cellpadding="1" cellspacing="3" width="50%">
+            <tr width="50%" bgcolor="7FFFD4">
+            <script>
+            // script para mostrar mapa dinamicamente (es decir, se muestran las piezas que se van agregando)
+            // La idea, es que a este html se le pasa un tag coordenadas, que es una lista de las imagenes de las piezas(path) y las posociones (x,y) de cada una
+            // asi se forma una matriz con estos datos, y se la muestra como una tabla.
+            // coordenadas[i] = ( Pathi , x_posi , y_posi)
+
+                // devuelve un arreglo de tamanio N donde cada elemento del arreglo es elem
+                function crear_arreglo(N,elem) {
+                  var arr = [];
+                   for (var i=0;i<N;i++) {
+                      arr[i] = elem;
+                    }
+                    return arr;
+                }
+
+                // devuelve una matriz NxN donde cada celda es elem
+                function crear_matriz(N,elem) {
+                    var arr = [];
+                    for (var i=0;i<N;i++) {
+                      arr[i] = crear_arreglo(N,elem);
+                    }
+                    return arr;
+                }
+                
+                // imprime el arreglo
+                function array_print (arr) {
+                  var N = arr.length;
+                  for (var i = 0 ; i < N; i++) {
+                    document.write(arr[i]);
+                  };
+                }
+
+                // imprime la matriz en forma de tabla
+                function print_matriz (matriz) {
+                  var N = matriz.length;
+                  for (var i = 0; i < N; i++) {
+                    document.write("<tr>");
+                    array_print(matriz[i]);
+                    document.write("</tr>");
+                  };
+                }
+
+                // agrega el elemento a la posicion x,y de la matriz
+                // pre x,y son validos
+                function agregar_elem_matriz(matriz,x,y,elem) {
+                  matriz[x][y] = elem
+                  return matriz;
+                }
+
+                //var foto = '<th> <img src="../static/piezas/{{piezaid}}.png"  width="100" height="100" /> </th>'
+
+                var humo = '<th> <img src="../static/piezas/IniciarJuego.jpg"  width="100" height="100" /> </th>'
+                var nueva_matriz = crear_matriz(5, humo);
+                print_matriz(nueva_matriz);
+
+            </script>
+            </tr>
+        </table>
     {% endblock %}
