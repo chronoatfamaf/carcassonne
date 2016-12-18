@@ -96,15 +96,50 @@ def jugar_partida(request):
             cant_giros = request.POST["cant_giros"]
             # aca se deberia llamar a la funcion de rotar_imagen
             print(pos_x,pos_y)
-            # si el usuario no algun dato del posteo
-            # aca deberia ir un elif para controlar que la pos (x,y) es compatible
-            # con las demas fichas del juego
+            # si el usuario no coloco algun dato del posteo necesario
             if pos_x == '' or pos_y == '':
                 posteo_invalido = 1
-            elif partida.turnos < partida.cantidad_jugadores:
-                partida.turnos = partida.turnos + 1
+            # si la posicion ingresada no pertenecen a la matriz    
+            elif pos_x < 0 or pos_y < 0 or pos_x > 59 or pos_y > 59:
+                posteo_invalido = 1
+            # si ya hay una ficha en la posicion ingresada 
+            elif Pieza.objects.filter(partida=partida,pos_x=pos_x,pos_y=pos_y).exists():
+                posteo_invalido = 1
             else:
-                partida.turnos = 1
+                # se forman los lados de la pieza que tendria x,y de colocarse definitivamente
+                lados_de_pieza = lados_pieza(partida.pieza_en_juego)
+                # se verifica que la pieza colocada en tal ubicacion (x,y) es valida para las normas
+                # del juego
+                posteo_invalido = compatibildad_juego(x,y,lados_de_pieza,partida)
+            # si el posteo es valido aumentamos el turno, para que juege el proximo jugador
+            if posteo_invalido == 0:    
+                if partida.turnos < partida.cantidad_jugadores:
+                    partida.turnos = partida.turnos + 1
+                else:
+                    partida.turnos = 1
+
+    # si hubo posteo y es valido, agregamos la pieza introducida por el usuario con los giros
+    # que tuviera y pasamos el turno              
+    if hubo_posteo == 1 and posteo_invalido == 0:
+        # creamos la nueva pieza
+        pieza_en_juego = partida.pieza_en_juego
+        path = 'partida'+str(partida.id)+'/'+str(pieza_en_juego)+'.png'
+        nueva_pieza = Pieza(pos_x=pos_x ,pos_y=pos_y ,pathimagen=path)
+        # le agregamos los lados
+        nueva_pieza = agregar_lados_a_pieza(nueva_pieza, lados_de_pieza)
+        nueva_pieza.partida = partida
+        # aca deberiamos girar si hubo giros
+        if cant_giros != '':
+            #giramos la pieza
+            pass
+        nueva_pieza.save()
+        partida.save()
+        return redirect('jugar_partida')
+     
+    # sino hubo posteo o fue un posteo invalido se vuevle redirigir al usuario que estaba jugando a la misma
+    # paguina para que posee bien
+
+
     # aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
     piezaid = 23
     partida = current_user.partida
@@ -120,16 +155,6 @@ def jugar_partida(request):
         'turno' : turno,
         'piezaid' : piezaid
     }
-    if hubo_posteo == 1 and posteo_invalido == 0:
-        # creamos la nueva pieza
-        pieza_en_juego = partida.pieza_en_juego
-        path = 'partida'+str(partida.id)+'/'+str(pieza_en_juego)+'.png'
-        nueva_pieza = Pieza(pos_x=pos_x ,pos_y=pos_y ,pathimagen=path)
-        nueva_pieza.partida = partida
-        nueva_pieza.save()
-        partida.save()
-        return redirect('jugar_partida')
-        
     return render(request,'jugar_partida.html', context) 
 
 @login_required
