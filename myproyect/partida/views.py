@@ -18,12 +18,6 @@ def lista_de_partidas(request):
     usuario.turno = 0
     usuario.save()
     partidas = Partida.objects.all()
-    kuku = partidas.filter(cantidad_jugadores=2)
-    if not kuku:
-        print("NO HAY KUKU")
-    print("Kuku")
-    print(kuku)
-    print(type(kuku))
     # asignamos a las partidas las cantidad actual de jugadores que estan esperando por jugarlas
     for partida in partidas:
         partida.jugando = Usuario.objects.filter(partida=partida).count()
