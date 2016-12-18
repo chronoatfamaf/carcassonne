@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<h1>Nueva Partida</h1>
+<form method="POST">
+  {% csrf_token %}
+  <div class="form-group">
+  {% for field in form %}
+  <div>
+    <label>{{ field.label }}</label>
+  </div>
+  <div>
+    {{ field }}
+  </div>
+  {% endfor %}
+  <br>
+  <button type="submit" class="save btn btn-default">Guardar</button>
+  </div>
+</form>
+{% endblock %}

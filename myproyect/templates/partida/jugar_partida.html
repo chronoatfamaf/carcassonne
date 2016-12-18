@@ -1,0 +1,46 @@
+  {% extends 'base.html' %}
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+    {% block content %}
+        <h1> Jugandoo !</h1>
+            <table class="table">
+              {% for jugador in jugadores%}
+              <tr> 
+                <td> nombre de jugador: {{ jugador }}</td>
+              </tr>
+              {% empty %}
+              <p>Error al imprimir nombre de jugadores : / </p>
+              {% endfor %}
+            </table>
+        <!-- -->
+        <p> mapa </p>
+        <TH>
+          <img src="../static/piezas/01.png"  width="100" height="100" />
+        </TH>
+        {% if current_user.turno == turno %}
+            <p> Imagen a colocar </p>
+            <TH>
+                  <img src="../static/piezas/{{piezaid}}.png"  width="100" height="100" />
+            </TH>
+            <p> Tu turno <p/>
+
+            <form name="ingresar cuit" action="{% url 'jugar_partida' %}" method="POST">
+                {% csrf_token %}
+                <p> Ingrese posicion X de la pieza: <input type="number" name="pos_x"> </p>
+                <p>Ingrese posicion Y de la pieza: <input type="number" name="pos_y"> </p>
+                <p>Giros sentido horario (90 grados): <input type="number" name="cant_giros"> </p>
+
+                <input type="submit" value="Colocar">
+            </form>
+        {% endif %}
+        <br>
+            <button onclick="myFunction()">Actualizar</button>
+        </br>
+        <script>
+            function myFunction() {
+                  location.reload(true);
+            }
+        </script>
+    {% endblock %}

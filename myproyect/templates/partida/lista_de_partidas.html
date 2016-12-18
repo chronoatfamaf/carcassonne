@@ -1,0 +1,21 @@
+  {% extends 'base.html' %}
+{% load staticfiles %}
+  <head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+{% block content %}
+  <h1> PARTIDAS</h1>
+  <table class="table">
+    {% for partida in partidas%}
+      <tr> 
+          <td> jugadores {{ partida.jugando }} de </td>
+          <td>{{ partida.cantidad_jugadores }}</td>
+          <td><a class="btn btn-default" href="{% url 'unirse_a_partida' pk=partida.pk %}">Unirse</a></td>
+      </tr>
+    {% empty %}
+      <p>No hay partidas disponibles </p>
+    {% endfor %}
+  </table>
+  <td><a class="btn btn-default" href=" {% url 'crear_partida' %}">Crear</a></td>
+
+{% endblock %}

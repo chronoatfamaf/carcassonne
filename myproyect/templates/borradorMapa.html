@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+     Por mejorar mapa
+    </head>
+        <BODY onload="document.getElementById('A1').focus();">
+            <CENTER>
+                <table  border="6" cellpadding="1" cellspacing="3" width="50%">
+                   <tr width="50%" bgcolor="7FFFD4">
+                    <th>Coordenadas</th>
+                        <script>
+                         var N = 20;
+                         // matriz N x N
+                         for (var i = 0; i < N; i++) {
+                             document.write("<th>"+(i+1)+"</th>");
+                         };
+                        </script>
+                    </tr>
+                        <script>
+                        // ej 0021 = zeroFill(21,4) 
+                        // 2516 = zeroFill(2516,4)
+                        // 009 = zerofill(9,3)
+                        // sirve para la modificacion del numero que llevara a ref del link a la imagen 
+                        // primer imagen se llama 0001.jpg y la ultima 3599.jpg ya que N=60 
+                        function zeroFill( number, width ) {
+                            width -= number.toString().length;
+                            if ( width > 0 ) {
+                                return new Array( width + (/\./.test( number ) ? 2 : 1) ).join( '0' ) + number;
+                            }
+                              return number + ""; // always return a string
+                        }
+                        var N = 20;
+                        var cons = 0;
+                        var elem = 0;
+                         for (var i = 0; i < N; i++) {
+                            document.write("<tr>");
+                             document.write("<th>"+(i+1)+"</th>");
+                            cons = N*i;
+                            for (var j = 0; j < N; j++) {
+                                elem = j+1+cons;
+                                elem = zeroFill(elem,4);
+                                document.write("<th>"+elem+"</th>");
+                            };
+                            document.write("</tr>");
+                         };
+                        </script>
+                </table>
+            </CENTER>
+        </BODY>                
+</html>
