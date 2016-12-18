@@ -23,8 +23,9 @@ class Pieza(models.Model):
     lado2 = models.CharField(max_length=50)
     lado3 = models.CharField(max_length=50)
     lado4 = models.CharField(max_length=50)
-    cantRotacion = models.IntegerField(default=0)
-    #Usuario = models.ForeignKey("Usuario", on_delete=models.CASCADE)
+    numerosDeTerrenos = models.IntegerField(default=1)
+    ubicacionSeguidorEnTerreno = models.IntegerField(default=0)
+    #Usuario = models.ForeignKey("Jugador", on_delete=models.CASCADE, blank=True ,null=True)
     imagenAsociada =  models.CharField(max_length=9, unique = True)
 
 class Celda(models.Model):
@@ -42,37 +43,47 @@ class Partida(models.Model):
    esTurno = models.IntegerField(default=1)
    piezaEnJuego = models.IntegerField(default=1)
    #fechaFin = models.CharField(max_length=20)
-   #jugadorInicial = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+   #jugadorInicial = models.ForeignKey(Jugador, on_delete=models.CASCADE, blank=True ,null=True)
 
-
+class Seguidor(models.Model):
+    jugador = models.ForeignKey("Jugador", on_delete=models.CASCADE, blank=True ,null=True)
+    terreno = models.ForeignKey("Terreno", on_delete=models.CASCADE, blank=True ,null=True)
+    color = models.CharField(max_length=7)
 
 
 class Terreno(models.Model):
-    idNombreTerreno = models.IntegerField(default=0, unique = True)
-    esOcupado = models.BooleanField()
-    asocPieza = models.ForeignKey("Pieza")
+    idNombreTerreno = models.IntegerField(default=0)
+    esOcupado = models.BooleanField(default=False)
+    asocPieza = models.ForeignKey("Pieza", blank=True ,null=True)
+    numeroDePosicionEnPieza = models.IntegerField(default=0)
 
 class Camino(Terreno):
     esTe = models.BooleanField()
-    ladoLibre = models.IntegerField(default=-1)
+    ladoLibre = models.IntegerField(default=0)
     esCruce = models.BooleanField()
-    ladoInicio = models.IntegerField(default=-1)
-    ladoFinal = models.IntegerField(default=-1)
-
+    ladoInicio = models.IntegerField(default=0)
+    ladoSeccionInicio  = models.IntegerField(default=0)
+    ladoFinal = models.IntegerField(default=0)
+    ladoSeccionFinal = models.IntegerField(default=0)
+    
 class Ciudad(Terreno):
-    numeroEscudos = models.IntegerField(default=-1)
+    numeroEscudos = models.IntegerField(default=0)
     esTodoCiudad = models.BooleanField()
-    ladoInicio = models.IntegerField(default=-1)
-    ladoFinal = models.IntegerField(default=-1)
-    unicoLadoLibre = models.IntegerField(default=-1)
-    unicoLadoCiudad = models.IntegerField(default=-1)
+    ladoInicio = models.IntegerField(default=0)
+    ladoSeccionInicio  = models.IntegerField(default=0)
+    ladoFinal = models.IntegerField(default=0)
+    ladoSeccionFinal = models.IntegerField(default=0)
+    unicoLadoLibre = models.IntegerField(default=0)
+    unicoLadoCiudad = models.IntegerField(default=0)
 
 class Granja(Terreno):
     conClaustro = models.BooleanField()
     claustroOcupado = models.BooleanField()
-    ladoInicio = models.IntegerField(default=-1)
-    ladoFinal = models.IntegerField(default=-1)
-    unicoLadoLibre = models.IntegerField(default=-1)
-    unicoLadoGranja = models.IntegerField(default=-1)
+    ladoInicio = models.IntegerField(default=0)
+    ladoSeccionInicio  = models.IntegerField(default=0)
+    ladoFinal = models.IntegerField(default=0)
+    ladoSeccionFinal = models.IntegerField(default=0)
+    unicoLadoLibre = models.IntegerField(default=0)
+    unicoLadoGranja = models.IntegerField(default=0)
     esTodoGranja = models.BooleanField()
-    esquinaLibre = models.IntegerField(default=-1)
+    esquinaLibre = models.IntegerField(default=0)
