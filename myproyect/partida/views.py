@@ -136,12 +136,15 @@ def jugar_partida(request):
         partida.save()
         return redirect('jugar_partida')
      
-    # sino hubo posteo o fue un posteo invalido se vuevle redirigir al usuario que estaba jugando a la misma
-    # paguina para que posee bien
-
-
-    # aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
-    piezaid = 23
+    # de lo contrario:
+    # si hubo posteo pero invalido, se lo redirige a la misma pag para que trate de introducir nuevamente 
+    # la misma ficha
+    elif hubo_posteo == 1 and posteo_invalido == 0:
+        piezaid = partida.piezaid
+    # si no hubo posteo, se le da una pieza por hacer
+    else:
+        #aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
+        piezaid = 23
     partida = current_user.partida
     partida.pieza_en_juego = piezaid
     partida.save()
