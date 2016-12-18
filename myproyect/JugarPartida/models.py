@@ -24,7 +24,7 @@ class Pieza(models.Model):
     lado3 = models.CharField(max_length=50)
     lado4 = models.CharField(max_length=50)
     cantRotacion = models.IntegerField(default=0)
-    #Usuario = models.ForeignKey("Usuario", on_delete=models.CASCADE)
+    #Usuario = models.ForeignKey("Jugador", on_delete=models.CASCADE)
     imagenAsociada =  models.CharField(max_length=9, unique = True)
 
 class Celda(models.Model):
@@ -44,7 +44,10 @@ class Partida(models.Model):
    #fechaFin = models.CharField(max_length=20)
    #jugadorInicial = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
-
+class Seguidor(models.Model):
+    jugador = models.ForeignKey("Jugador", on_delete=models.CASCADE)
+    terreno = models.ForeignKey("Terreno", on_delete=models.CASCADE)
+    color = models.CharField(max_length=7)
 
 
 class Terreno(models.Model):
