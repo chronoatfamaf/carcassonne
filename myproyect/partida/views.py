@@ -6,9 +6,9 @@ from usuario.models import Usuario
 from django.contrib.auth.models import User
 from .forms import FormularioPartida
 from django.http import HttpResponseRedirect
+from partida.funciones_auxs import *
 import os, shutil
 # Create your views here.
-
 
 @login_required
 def lista_de_partidas(request):
@@ -18,6 +18,12 @@ def lista_de_partidas(request):
     usuario.turno = 0
     usuario.save()
     partidas = Partida.objects.all()
+    kuku = partidas.filter(cantidad_jugadores=2)
+    if not kuku:
+        print("NO HAY KUKU")
+    print("Kuku")
+    print(kuku)
+    print(type(kuku))
     # asignamos a las partidas las cantidad actual de jugadores que estan esperando por jugarlas
     for partida in partidas:
         partida.jugando = Usuario.objects.filter(partida=partida).count()

@@ -33,6 +33,11 @@ class Pieza(models.Model):
 	# atributos del juego, podrian faltar 
 	numLadoAsociado = models.IntegerField(default=0)
 	esDescartada = models.BooleanField(default =False)
+	#			 ___1___
+	#			 |     |
+	# pieza =   4|     |2
+	#			 |_____|
+	#			    3
 	lado1 = models.CharField(max_length=50)
 	lado2 = models.CharField(max_length=50)
 	lado3 = models.CharField(max_length=50)
