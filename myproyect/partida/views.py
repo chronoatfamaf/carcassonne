@@ -8,6 +8,7 @@ from .forms import FormularioPartida
 from django.http import HttpResponseRedirect
 from partida.funciones_auxs import *
 import os, shutil
+from partida.define import ListaDeDescipcionDePiezas 
 # Create your views here.
 
 @login_required
@@ -26,6 +27,8 @@ def lista_de_partidas(request):
  
     return render(request, 'lista_de_partidas.html',
                   {'partidas': partidas})
+
+
 @login_required
 def unirse_a_partida(request, pk):
     partida = Partida.objects.get(pk=pk)
@@ -54,7 +57,6 @@ def unirse_a_partida(request, pk):
         return redirect('jugar_partida') 
 
 
-
 @login_required
 def abandonar_partida(request, pk):
     partida = Partida.objects.get(pk=pk)
@@ -77,14 +79,9 @@ def jugar_partida(request):
     usuarios = Usuario.objects.filter(partida=partida)
     hubo_posteo = 0
     posteo_invalido = 0
-    print("current_user.turno")
-    print(current_user.turno)
-    print("TURNO ANTEs")
-    print(partida.turnos)
     if current_user.turno == partida.turnos:
         if request.method == 'POST':
             hubo_posteo = 1
-            print("HICE POST y postie:")
             # par (x,y) que describe la posicion de la ficha en el mapa de esta partida
             pos_x = request.POST["pos_x"]
             pos_y = request.POST["pos_y"]
@@ -95,7 +92,8 @@ def jugar_partida(request):
             
             cant_giros = request.POST["cant_giros"]
             # aca se deberia llamar a la funcion de rotar_imagen
-            print(pos_x,pos_y)
+            rotarpieza(partida.pieza_en_juego)
+
             # si el usuario no coloco algun dato del posteo necesario
             if pos_x == '' or pos_y == '':
                 posteo_invalido = 1
@@ -120,7 +118,7 @@ def jugar_partida(request):
 
     # si hubo posteo y es valido, agregamos la pieza introducida por el usuario con los giros
     # que tuviera y pasamos el turno              
-    if hubo_posteo == 1 and posteo_invalido == 0:
+    if hubo_posteo == 1 and posteo_invalido == 1:
         # creamos la nueva pieza
         pieza_en_juego = partida.pieza_en_juego
         path = 'partida'+str(partida.id)+'/'+str(pieza_en_juego)+'.png'
@@ -174,9 +172,26 @@ def crear_partida(request):
             # algo asi.. es decir crear un subdirectorio static/partidapk donde
             # estan todas las imagenes de las piezas
             #shutil.copytree('../static/piezas',path)
-            return redirect( 'unirse_a_partida',pk=partida.pk)
+            manejodedirectorio(partida.pk)
+            for x in xrange(1, 72):
+              if x < 10:
+                piezanueva = Pieza(esDescartada=False,
+                                   lado1 = ListaDeDescipcionDePiezas[x - 1][0],
+                                   lado2 = ListaDeDescipcionDePiezas[x - 1][1],
+                                   lado3 = ListaDeDescipcionDePiezas[x - 1][2],
+                                   lado4 = ListaDeDescipcionDePiezas[x - 1][3],
+                                   imagenAsociada = path + '0' + str(x) + '.png' )
+              else :
+                piezanueva = Pieza(esDescartada=False,
+                                   lado1 = ListaDeDescipcionDePiezas[x - 1][0],
+                                   lado2 = ListaDeDescipcionDePiezas[x - 1][1],
+                                   lado3 = ListaDeDescipcionDePiezas[x - 1][2],
+                                   lado4 = ListaDeDescipcionDePiezas[x - 1][3],
+                                   imagenAsociada = path +  str(x) + '.png' )
+              piezanueva.save()
+              return redirect( 'unirse_a_partida',pk=partida.pk)
     else:
         form = FormularioPartida()
-        
+
     return render(request, 'crear_partida.html', {'form': form})
 
