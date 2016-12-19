@@ -1,4 +1,4 @@
-  {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load staticfiles %}
 <head>
     <meta charset="UTF-8">
@@ -14,13 +14,9 @@
               <p>Error al imprimir nombre de jugadores : / </p>
               {% endfor %}
             </table>
-        <!-- -->
-        <p> mapa </p>
-        <TH>
-          <img src="../static/piezas/01.png"  width="100" height="100" />
-        </TH>
+
         {% if current_user.turno == turno %}
-            <p> Imagen a colocar </p>
+            <p> Ejemplo de Imagen a colocar </p>
             <TH>
                   <img src="../static/piezas/{{piezaid}}.png"  width="100" height="100" />
             </TH>
@@ -43,6 +39,115 @@
                   location.reload(true);
             }
         </script>
+
+
+
+        <table  border="6" cellpadding="1" cellspacing="3" width="50%">
+            <tr width="50%" bgcolor="7FFFD4">
+            <script>
+            // script para mostrar mapa dinamicamente (es decir, se muestran las piezas que se van agregando)
+            // La idea, es que a este html se le pasa un tag coordenadas, que es una lista de las imagenes de las piezas(path) y las posociones (x,y) de cada una
+            // asi se forma una matriz con estos datos, y se la muestra como una tabla.
+            // coordenadas[i] = ( x_posi , y_posi, Pathi)
+
+                // devuelve un arreglo de tamanio N donde cada elemento del arreglo es elem
+                function crear_arreglo(N,elem) {
+                  var arr = [];
+                   for (var i=0;i<N;i++) {
+                      arr[i] = elem;
+                    }
+                    return arr;
+                }
+
+                // devuelve una matriz NxN donde cada celda es elem
+                function crear_matriz(N,elem) {
+                    var arr = [];
+                    for (var i=0;i<N;i++) {
+                      arr[i] = crear_arreglo(N,elem);
+                    }
+                    return arr;
+                }
+                
+                // imprime el arreglo
+                function array_print (arr) {
+                  var N = arr.length;
+                  for (var i = 0 ; i < N; i++) {
+                    document.write(arr[i]);
+                  };
+                }
+
+                // imprime la matriz en forma de tabla
+                function print_matriz (matriz) {
+                  var N = matriz.length;
+                  for (var i = 0; i < N; i++) {
+                    document.write("<tr>");
+                    array_print(matriz[i]);
+                    document.write("</tr>");
+                  };
+                }
+ 
+                // agrega el elemento a la posicion x,y de la matriz
+                // pre x,y son validos
+                function agregar_elem_matriz(matriz,x,y,elem) {
+                  matriz[y][x] = elem
+                  return matriz;
+                }
+
+                var humo = '<th> <img src="../static/piezas/IniciarJuego.jpg"  width="100" height="100" /> </th>'
+
+                // por defecto el mapa sera de 60x60 aunque es trivial cambiarlo si se quiere
+                function crear_mapa_actualizado(coordenadas) {
+                    var mapa = crear_matriz(5,humo);
+                    var pieza = ''
+                    for (var i = 0; i < coordenadas.length; i++) {
+                      pieza = '<th> <img src="../static/'+coordenadas[i][2]+'"  width="100" height="100" /> </th>';
+                      mapa = agregar_elem_matriz(mapa, coordenadas[i][0], coordenadas[i][1], pieza);
+
+                    };
+                    return mapa;
+                }
+                // SE LLAMARIA A crear_mapa_actualizado( del tag coordenadas
+                // se imprimiria la matriz resultante
+document.write("holaa");
+var data2 = '{{ data }}';
+//document.write(data2['1']);
+
+
+               /* var coordenadas = '{{coordenadas}}';
+                var current_user = '{{current_user}}';
+                
+                var jugadores = '{{jugadores}}';
+*/
+               // document.write(data2);
+
+                //var mapa = crear_mapa_actualizado(coordenadas);
+
+                //print_matriz(mapa);
+               // var coordenadas2 = [(1,2,"BOCAAAA")];
+                //document.write(coordenadas2);
+//
+                //document.write(coordenadas);
+
+                // codigo para debug
+                var foto = '<th> <img src="../static/piezas/{{piezaid}}.png"  width="100" height="100" /> </th>'
+
+                var nueva_matriz = crear_matriz(5, humo);
+              nueva_matriz = agregar_elem_matriz(nueva_matriz,3,2,foto);
+                print_matriz(nueva_matriz);
+//var my_var = '{{coordenadas}}';
+var coordenadas = "{{coordenadas|safe}}"; 
+//var coordenadas_obj = JSON.parse(my_var);
+document.write("Esto es una lista deberia ser un objeto");
+document.write(coordenadas);
+
+//var my_var_parsed = jQuery.parseJSON(my_var);
+  //var coordenadas_objeto = jsonpickle.decode(my_var)
+
+//document.write("chauu");
+            </script>
+            </tr>
+        </table>
+    {% endblock %}
 
   <script>
   var partidas = '[{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 12, "fields": {"cantidad_jugadores": 2, "jugando": 1, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 13, "fields": {"cantidad_jugadores": 2, "jugando": 2, "turnos": 2, "pieza_en_juego": 23}}, {"model": "partida.partida", "pk": 14, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 15, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 16, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 17, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}]';
