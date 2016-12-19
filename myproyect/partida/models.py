@@ -30,6 +30,7 @@ class Pieza(models.Model):
 	pathimagen =  models.CharField(max_length=9, unique = True)
 	pos_x = models.IntegerField( default=1)
 	pos_y = models.IntegerField( default=1)
+	idp = models.IntegerField( default=1)
 	# atributos del juego, podrian faltar 
 	numLadoAsociado = models.IntegerField(default=0)
 	esDescartada = models.BooleanField(default =False)

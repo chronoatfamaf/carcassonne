@@ -11,7 +11,7 @@ import os, shutil
 import glob
 from partida.define import ListaDeDescipcionDePiezas
 from django.core import serializers
-
+from partida.funciones_auxs import compatibilidad_juego
 # Create your views here.
 
 @login_required
@@ -94,26 +94,37 @@ def jugar_partida(request):
             # ej cant_giros = -1 --> 360-90 grados
             
             cant_giros = request.POST["cant_giros"]
+            pos_x = int(pos_x)
+            pos_y = int(pos_y)
+
             # aca se deberia llamar a la funcion de rotar_imagen
-            rotarpieza(partida.pieza_en_juego, cant_giros)
+            if cant_giros != '' and int(cant_giros) > -1:
+                rotarpieza(partida.pieza_en_juego, cant_giros)
 
             # si el usuario no coloco algun dato del posteo necesario
             if pos_x == '' or pos_y == '':
+                print("uno")
                 posteo_invalido = 1
             # si la posicion ingresada no pertenecen a la matriz    
             elif pos_x < 0 or pos_y < 0 or pos_x > 59 or pos_y > 59:
+                print("unoss")
+
                 posteo_invalido = 1
             # si ya hay una ficha en la posicion ingresada 
             elif Pieza.objects.filter(partida=partida,pos_x=pos_x,pos_y=pos_y).exists():
+                print("unodasdad")
+
                 posteo_invalido = 1
             else:
                 # se forman los lados de la pieza que tendria x,y de colocarse definitivamente
                 lados_de_pieza = lados_pieza(partida.pieza_en_juego)
                 # se verifica que la pieza colocada en tal ubicacion (x,y) es valida para las normas
                 # del juego
-                posteo_invalido = compatibildad_juego(x,y,lados_de_pieza,partida)
+                posteo_invalido = compatibilidad_juego(pos_x,pos_y,lados_de_pieza,partida)
+                print(posteo_invalido)
             # si el posteo es valido aumentamos el turno, para que juege el proximo jugador
-            if posteo_invalido == 0:    
+            if posteo_invalido == 0:
+                print ("TURNOOOOOOOOOOOOOOOOO") 
                 if partida.turnos < partida.cantidad_jugadores:
                     partida.turnos = partida.turnos + 1
                 else:
@@ -121,49 +132,58 @@ def jugar_partida(request):
 
     # si hubo posteo y es valido, agregamos la pieza introducida por el usuario con los giros
     # que tuviera y pasamos el turno              
-    if hubo_posteo == 1 and posteo_invalido == 1:
-        # creamos la nueva pieza
-        pieza_en_juego = partida.pieza_en_juego
-        path = 'partida'+str(partida.id)+'/'+str(pieza_en_juego)+'.png'
-        nueva_pieza = Pieza(pos_x=pos_x ,pos_y=pos_y ,pathimagen=path)
-        # le agregamos los lados
-        nueva_pieza = agregar_lados_a_pieza(nueva_pieza, lados_de_pieza)
-        nueva_pieza.partida = partida
-        # aca deberiamos girar si hubo giros
-        if cant_giros != '':
-            #giramos la pieza
-            pass
-        nueva_pieza.save()
+    if hubo_posteo == 1 and posteo_invalido == 0:
+        print("acaa2")
         partida.save()
         return redirect('jugar_partida')
      
     # de lo contrario:
     # si hubo posteo pero invalido, se lo redirige a la misma pag para que trate de introducir nuevamente 
     # la misma ficha
-    elif hubo_posteo == 1 and posteo_invalido == 0:
-        piezaid = partida.piezaid
+    elif hubo_posteo == 1 and posteo_invalido == 1:
+        print("acaa")
+        piezaid = partida.pieza_en_juego
+        partida = current_user.partida
+        partida.pieza_en_juego = piezaid
+        partida.save()
+        turno = partida.turnos
+        piezas = Pieza.objects.filter(partida=partida)
+        piezas = serializers.serialize("json", piezas)
+
+        print("TURNO DESPUES")
+        print(turno)
+        jugadores = User.objects.filter(usuario__partida=partida)
+        context = {
+            'jugadores' : jugadores,
+            'current_user' : current_user,
+            'turno' : turno,
+            'piezas' : piezas,
+            'piezaid' : piezaid
+        }
+        return render(request,'jugar_partida.html', context) 
+
     # si no hubo posteo, se le da una pieza por hacer
     else:
         #aca deberia llamarse a una funcion que toma un valor random, de numero, para elegir la foto azarosamente
         piezaid = 23
-    partida = current_user.partida
-    partida.pieza_en_juego = piezaid
-    partida.save()
-    turno = partida.turnos
-    piezas = Pieza.objects.filter(partida=partida)
-    piezas = serializers.serialize("json", piezas)
+        partida = current_user.partida
+        partida.pieza_en_juego = piezaid
+        partida.save()
+        turno = partida.turnos
+        piezas = Pieza.objects.filter(partida=partida)
+        piezas = serializers.serialize("json", piezas)
 
-    print("TURNO DESPUES")
-    print(turno)
-    jugadores = User.objects.filter(usuario__partida=partida)
-    context = {
-        'jugadores' : jugadores,
-        'current_user' : current_user,
-        'turno' : turno,
-        'piezas' : piezas,
-        'piezaid' : piezaid
-    }
-    return render(request,'jugar_partida.html', context) 
+        print("TURNO DESPUES")
+        print(turno)
+        jugadores = User.objects.filter(usuario__partida=partida)
+        context = {
+            'jugadores' : jugadores,
+            'current_user' : current_user,
+            'turno' : turno,
+            'piezas' : piezas,
+            'piezaid' : piezaid
+        }
+        return render(request,'jugar_partida.html', context) 
 
 
 
@@ -189,6 +209,7 @@ def crear_partida(request):
                                    lado2 = ListaDeDescipcionDePiezas[x - 1][1],
                                    lado3 = ListaDeDescipcionDePiezas[x - 1][2],
                                    lado4 = ListaDeDescipcionDePiezas[x - 1][3],
+                                   idp = x,
                                    pathimagen = path + '0' + str(x) + '.png' )
               else :
                 piezanueva = Pieza(esDescartada=False,
@@ -196,6 +217,7 @@ def crear_partida(request):
                                    lado2 = ListaDeDescipcionDePiezas[x - 1][1],
                                    lado3 = ListaDeDescipcionDePiezas[x - 1][2],
                                    lado4 = ListaDeDescipcionDePiezas[x - 1][3],
+                                   idp = x,
                                    pathimagen = path +  str(x) + '.png' )
               piezanueva.save()
               return redirect( 'unirse_a_partida',pk=partida.pk)

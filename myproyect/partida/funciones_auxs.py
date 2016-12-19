@@ -26,8 +26,11 @@ PosicionMapa = [
 
 
 
-def rotarpieza(idpieza, numeroderotacion):
-    piezadelturno = Pieza.objects.get(partida=idpieza)
+def rotarpieza(partida,idpieza, numeroderotacion):
+    piezas = Pieza.objects.filter(partida=partida)
+    piezadelturno = piezas.filter(idp=idpieza)
+
+
 
     for j in range(1, numeroderotacion):
       aux1 = piezadelturno.lado2
@@ -45,88 +48,95 @@ def rotarpieza(idpieza, numeroderotacion):
 # la hice  con un solo caso, y con un significado cualquiera solo a modo de ejemplo
 # del valor de los lados
 def lados_pieza(pieza_en_juego):
-	lados = []
-	if pieza_en_juego == 1:
-		lados = [1,1,3,2]
-	else:
-		lados = [3,3,2,1]
-	return lados		
+  lados = []
+  if pieza_en_juego == 1:
+    lados = [1,1,3,2]
+  else:
+    lados = [3,3,2,1]
+  return lados    
 
-			
+      
 # POST: devuelve 1 si la pieza_a_poner se puede poner donde quiso el jugador,
 # sino 0
 # PRE: no hay ninguna pieza en la posicion donde el usuario quiere poner esta pieza
 # y la posicion pertenece a la matriz, es decir (ej: si la matriz es 4x4 el usuario ingreso x,y
-# tal que 0 =< x  < 4,  lo mismo con y 	
-#			 ___1___
-#			 |     |
+# tal que 0 =< x  < 4,  lo mismo con y  
+#      ___1___
+#      |     |
 # pieza =   4|     |2
-#			 |_____|
-#			    3
-#			
+#      |_____|
+#         3
+#     
 def compatibilidad_juego(x,y,lados, partida):
-	# lados
-	lado1 = lados[0]
-	lado2 = lados[1]
-	lado3 = lados[2]
-	lado4 = lados[3]
-	# flags para controlar que es valido poner la ficha
-	arriba_valido = 0
-	abajo_valido = 0
-	derecha_valido = 0
-	izquierda_valido = 0
-	# obtenemos todas las piezas jugadas
-	piezas_partida = Pieza.objects.get(partida=partida)
-	pieza_arriba = piezas_partida.filter(pos_x=pos_x+1,pos_y=pos_y)
-	pieza_abajo = piezas_partida.filter(pos_x=pos_x-1,pos_y=pos_y)
-	pieza_derecha = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y+1)
-	pieza_izquierda = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y-1)
-	control1 = not pieza_arriba and not pieza_abajo
+  print ("compatibilidad_juegoo") 
+
+  # lados
+  lado1 = lados[0]
+  lado2 = lados[1]
+  lado3 = lados[2]
+  lado4 = lados[3]
+  # flags para controlar que es valido poner la ficha
+  arriba_valido = 0
+  abajo_valido = 0
+  derecha_valido = 0
+  izquierda_valido = 0
+  try:
+    Pieza.objects.get(partida=partida)
+  except:
+    return 0
+
+  # obtenemos todas las piezas jugadas
+  piezas_partida = Pieza.objects.get(partida=partida)
+  pieza_arriba = piezas_partida.filter(pos_x=pos_x+1,pos_y=pos_y)
+  pieza_abajo = piezas_partida.filter(pos_x=pos_x-1,pos_y=pos_y)
+  pieza_derecha = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y+1)
+  pieza_izquierda = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y-1)
+  control1 = not pieza_arriba and not pieza_abajo
   #control1 = not pieza_arriba and not pieza_abajo
   #control2 = not pieza_derecha and not pieza_izquierda
-	control2 = not piezas_partida.filter(pos_x=pos_x,pos_y=pos_y+1) and not pieza_izquierda
+  control2 = not pieza_derecha and not pieza_izquierda
 
 
 
 
-	if control1 and control2:
-		return 0
-	if not pieza_arriba:
-		arriba_valido = 1
-	if not pieza_arriba:
-		arriba_valido = 1
-	else: 
-		if lado1 == pieza_arriba.lado3:
-			arriba_valido = 1
-	if not pieza_abajo:
-		abajo_valido = 1
-	else: 
-		if lado3 == pieza_abajo.lado1:
-			abajo_valido = 1
-	if not pieza_derecha:
-		derecha_valido = 1
-	else: 
-		if lado2 == pieza_derecha.lado4:
-			derecha_valido = 1
-	if not pieza_izquierda:
-		izquierda_valido = 1
-	else: 
-		if lado4 == pieza_izquierda.lado2:
-			izquierda_valido = 1
+  if control1 and control2:
+    return 0
+  if not pieza_arriba:
+    arriba_valido = 0
+  if not pieza_arriba:
+    arriba_valido = 0
+  else: 
+    if lado1 == pieza_arriba.lado3:
+      arriba_valido = 0
+  if not pieza_abajo:
+    abajo_valido = 0
+  else: 
+    if lado3 == pieza_abajo.lado1:
+      abajo_valido = 0
+  if not pieza_derecha:
+    derecha_valido = 0
+  else: 
+    if lado2 == pieza_derecha.lado4:
+      derecha_valido = 0
+  if not pieza_izquierda:
+    izquierda_valido = 0
+  else: 
+    if lado4 == pieza_izquierda.lado2:
+      izquierda_valido = 0
 
 
-	if arriba_valido and abajo_valido and derecha_valido and izquierda_valido:
-		return 1
-	else:
-		return 0
+  if arriba_valido and abajo_valido and derecha_valido and izquierda_valido:
+    return 0
+  else:
+    return 1
 
 def agregar_lados_a_pieza(pieza,lados):
-	pieza.lado1 = lados[0]
-	pieza.lado1 = lados[1]
-	pieza.lado1 = lados[2]
-	pieza.lado1 = lados[3]
+  pieza.lado1 = lados[0]
+  pieza.lado1 = lados[1]
+  pieza.lado1 = lados[2]
+  pieza.lado1 = lados[3]
 
-	return pieza
+  return pieza
 
 # El parametro de entrada es el primary key de la partida
 def manejodedirectorio(nombredirectorio):
