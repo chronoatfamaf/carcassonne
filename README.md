@@ -1,27 +1,23 @@
 # Carcassonne
 
-Preparacion del entorno virtual:
+## Preparacion del entorno virtual:
 
-virtualenv -p python 3 NOMBRE
+	virtualenv -p python 3 NOMBRE
+	source NOMBRE/bin/activate
+	pip3 install django
+	pip3 install django-widget-tweaks
+	pip3 install jsonpickle
+	pip3 install Pillow 
 
-source NOMBRE/bin/activate
+## Ejecucion:
 
-pip3 install django
-pip3 install django-widget-tweaks
+	python3 manage.py makemigrations
+	python3 manage.py migrate
+	python3 manage.py runserver
+	
+	
 
-pip3 install jsonpickle
-
-pip3 install Pillow 
-
-Ejecucion:
-
-python3 manage.py makemigrations
-
-python3 manage.py migrate
-
-python3 manage.py runserver
-
-Comentario General del proyecto:
+## Comentario General del proyecto:
 
 	Lo que se logro:
 		Registro, login,logout, ver perfil y editar perfil usuario.
