@@ -39,11 +39,14 @@
 
 	Dificultades:
 		Poco tiempo, mala administracion general, muchos errores en la division y ejecucion de tareas,
-		mala planificacion y diseño, fueron surgiendo muchos problemas en el codigo que no consideramos o no conocimaos si quiera que hicieron que tuvieramos que volver a hacer cosas que ya habiamos hecho,  de hacer cosas que al final ni siquiera usamos, estos bugs ya en etapas muy avanzadas tuvieron un costo en tiempo imposible de solventar.
+		mala planificacion y diseño, fueron surgiendo muchos problemas en el codigo que no consideramos 
+		o no conociamos si quiera que hicieron que tuvieramos que volver a hacer cosas que ya habiamos hecho,
+		de hacer cosas que al final ni siquiera usamos, estos bugs ya en etapas muy avanzadas tuvieron un costo 
+		en tiempo imposible de solventar.
 
 	Criticas constructivas: 
-		- Nos parecio un proyecto bastante grande como para hacerse en dos semanas con un grupo o equipo totalmente nuevo,
-		sin conocernos, ni saber como trabajabamos, teniendo en cuenta que recien comenzabamos con Django.
+		- Nos parecio un proyecto bastante grande como para hacerse en dos semanas con un grupo o equipo totalmente 
+		nuevo, sin conocernos, ni saber como trabajabamos, teniendo en cuenta que recien comenzabamos con Django.
 		- Nos parecio una dificultad extra implementar un juego ya que Django esta diseñado para realizar aplicaciones webs.
-		- Creemos que de haber realizado bien el trabajo en equipo tal vez hubieramos llegado al objetivo,  pero para ello hubiera sido neceserio ya conocernos y haber trabajado antes en otro
-		proyecto.
+		- Creemos que de haber realizado bien el trabajo en equipo tal vez hubieramos llegado al objetivo,  
+		pero para ello hubiera sido neceserio ya conocernos y haber trabajado antes en otro proyecto.
