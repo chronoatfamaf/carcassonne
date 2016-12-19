@@ -172,7 +172,6 @@ def manejodedirectorio(nombredirectorio):
       dibujo.text(PosicionMapa[7], "8", fill = 'yellow')
       dibujo.text(PosicionMapa[8], "9", fill = 'yellow')
       final = Image.alpha_composite(imagen, texto)
-      final.show()
       final.save("static/partida" + str(nombredirectorio)+ "/Seleccion" +
                imagenesbasicas[x - 1])
       im.save("static/partida" + str(nombredirectorio) + "/" +
@@ -186,7 +185,6 @@ def asignarseguidor(turno, direcciondelaimagen):
   dibujo = ImageDraw.Draw(texto)
   dibujo.text(PosicionMapa[turno - 1], "S", fill = ColorDeJugador[turno - 1])
   final = Image.alpha_composite(imagen, texto)
-  final.show()
   final.save(direcciondelaimagen)
 
 def quitarseguidor(direcciondelaimagen):
