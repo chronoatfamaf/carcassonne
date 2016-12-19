@@ -43,4 +43,70 @@
                   location.reload(true);
             }
         </script>
+
+  <script>
+  var partidas = '[{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 12, "fields": {"cantidad_jugadores": 2, "jugando": 1, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 13, "fields": {"cantidad_jugadores": 2, "jugando": 2, "turnos": 2, "pieza_en_juego": 23}}, {"model": "partida.partida", "pk": 14, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 15, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 16, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 17, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}]';
+  //document.write(partidas[0].fields.cantidad_jugadores);
+  var i = "hola";
+  var c = i.charAt(0);
+  var m;
+  m = c;
+  m = m + c;
+  document.write(m);
+  var myobj = JSON.parse('{ "hello":"world" }');
+  var fi = '{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}';
+  var tres = JSON.parse('{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}');
+
+      document.write(tres.pk);
+
+document.write(myobj.hello); 
+
+  function lista_objetos (string) {
+    var c;
+    var i = 0;
+    var tmp = '';
+    var lista_objetos = [];
+    var obj;
+      //document.write("luna");
+
+    while (i < string.length) {
+
+          c = string.charAt(i);
+          if (c == '{') {
+            tmp = c;
+            while (c != '}') {
+              c = string.charAt(i);
+              tmp = tmp + c;
+              i = i + 1;
+            }
+            tmp = tmp + c;
+            //tmp = tmp + c;
+      document.write("pio");
+      tmp = tmp.slice(1);
+      document.write(tmp);
+
+            obj = JSON.parse(tmp);  
+            lista_objetos.push(obj);
+
+          }
+          i = i + 1;
+    }
+    return lista_objetos;
+  }
+  var tri = {}
+  var objetos =lista_objetos(partidas);
+  var cantidad_jugadores_lista = []
+  var cantidad_jugadores_lista2 = []
+
+  for (var i = 0; i < objetos.length; i++) {
+    cantidad_jugadores_lista.push((objetos[i].pk));
+    cantidad_jugadores_lista2.push((objetos[i].fields.jugando));
+  };
+ document.write(cantidad_jugadores_lista);
+ document.write(cantidad_jugadores_lista2);
+
+  </script>
+<html>
+
+        
     {% endblock %}
