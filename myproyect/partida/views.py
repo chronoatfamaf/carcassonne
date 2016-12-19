@@ -9,7 +9,9 @@ from django.http import HttpResponseRedirect
 from partida.funciones_auxs import *
 import os, shutil
 import glob
-from partida.define import ListaDeDescipcionDePiezas 
+from partida.define import ListaDeDescipcionDePiezas
+from django.core import serializers
+
 # Create your views here.
 
 @login_required
@@ -148,6 +150,9 @@ def jugar_partida(request):
     partida.pieza_en_juego = piezaid
     partida.save()
     turno = partida.turnos
+    piezas = Pieza.objects.filter(partida=partida)
+    piezas = serializers.serialize("json", piezas)
+
     print("TURNO DESPUES")
     print(turno)
     jugadores = User.objects.filter(usuario__partida=partida)
@@ -155,6 +160,7 @@ def jugar_partida(request):
         'jugadores' : jugadores,
         'current_user' : current_user,
         'turno' : turno,
+        'piezas' : piezas,
         'piezaid' : piezaid
     }
     return render(request,'jugar_partida.html', context) 

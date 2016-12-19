@@ -96,77 +96,22 @@
                 var humo = '<th> <img src="../static/piezas/IniciarJuego.jpg"  width="100" height="100" /> </th>'
 
                 // por defecto el mapa sera de 60x60 aunque es trivial cambiarlo si se quiere
-                function crear_mapa_actualizado(coordenadas) {
-                    var mapa = crear_matriz(5,humo);
+                function crear_mapa_actualizado(x_list, y_list, path_list) {
+                    var mapa = crear_matriz(60,humo);
                     var pieza = ''
-                    for (var i = 0; i < coordenadas.length; i++) {
-                      pieza = '<th> <img src="../static/'+coordenadas[i][2]+'"  width="100" height="100" /> </th>';
-                      mapa = agregar_elem_matriz(mapa, coordenadas[i][0], coordenadas[i][1], pieza);
-
+                    for (var i = 0; i < x_list.length; i++) {
+                      pieza = '<th> <img src="../static/'+path_list[i]+'"  width="100" height="100" /> </th>';
+                      mapa = agregar_elem_matriz(mapa, x_list[i], y_list[i], pieza);
                     };
                     return mapa;
                 }
                 // SE LLAMARIA A crear_mapa_actualizado( del tag coordenadas
                 // se imprimiria la matriz resultante
-document.write("holaa");
-var data2 = '{{ data }}';
-//document.write(data2['1']);
 
 
-               /* var coordenadas = '{{coordenadas}}';
-                var current_user = '{{current_user}}';
-                
-                var jugadores = '{{jugadores}}';
-*/
-               // document.write(data2);
 
-                //var mapa = crear_mapa_actualizado(coordenadas);
 
-                //print_matriz(mapa);
-               // var coordenadas2 = [(1,2,"BOCAAAA")];
-                //document.write(coordenadas2);
-//
-                //document.write(coordenadas);
-
-                // codigo para debug
-                var foto = '<th> <img src="../static/piezas/{{piezaid}}.png"  width="100" height="100" /> </th>'
-
-                var nueva_matriz = crear_matriz(5, humo);
-              nueva_matriz = agregar_elem_matriz(nueva_matriz,3,2,foto);
-                print_matriz(nueva_matriz);
-//var my_var = '{{coordenadas}}';
-var coordenadas = "{{coordenadas|safe}}"; 
-//var coordenadas_obj = JSON.parse(my_var);
-document.write("Esto es una lista deberia ser un objeto");
-document.write(coordenadas);
-
-//var my_var_parsed = jQuery.parseJSON(my_var);
-  //var coordenadas_objeto = jsonpickle.decode(my_var)
-
-//document.write("chauu");
-            </script>
-            </tr>
-        </table>
-    {% endblock %}
-
-  <script>
-  var partidas = '[{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 12, "fields": {"cantidad_jugadores": 2, "jugando": 1, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 13, "fields": {"cantidad_jugadores": 2, "jugando": 2, "turnos": 2, "pieza_en_juego": 23}}, {"model": "partida.partida", "pk": 14, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 15, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 16, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}, {"model": "partida.partida", "pk": 17, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}]';
-  //document.write(partidas[0].fields.cantidad_jugadores);
-  var i = "hola";
-  var c = i.charAt(0);
-  var m;
-  m = c;
-  m = m + c;
-  document.write(m);
-  var myobj = JSON.parse('{ "hello":"world" }');
-  var fi = '{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}';
-  var tres = JSON.parse('{"model": "partida.partida", "pk": 11, "fields": {"cantidad_jugadores": 2, "jugando": 0, "turnos": 1, "pieza_en_juego": 10}}');
-
-      document.write(tres.pk);
-
-document.write(myobj.hello); 
-
-  function lista_objetos (string) {
+function lista_objetos (string) {
     var c;
     var i = 0;
     var tmp = '';
@@ -185,8 +130,6 @@ document.write(myobj.hello);
               i = i + 1;
             }
             tmp = tmp + c;
-            //tmp = tmp + c;
-      document.write("pio");
       tmp = tmp.slice(1);
       document.write(tmp);
 
@@ -198,20 +141,28 @@ document.write(myobj.hello);
     }
     return lista_objetos;
   }
-  var tri = {}
-  var objetos =lista_objetos(partidas);
-  var cantidad_jugadores_lista = []
-  var cantidad_jugadores_lista2 = []
+
+var piezas = "{{piezas}}"; 
+document.write("Esto es una lista deberia ser un objeto");
+document.write(piezas);
+
+var objetos =lista_objetos(piezas);
+  var x_list = []
+  var y_list = []
+  var path_list = []
 
   for (var i = 0; i < objetos.length; i++) {
-    cantidad_jugadores_lista.push((objetos[i].pk));
-    cantidad_jugadores_lista2.push((objetos[i].fields.jugando));
+    x_list.push((objetos[i].fields.pos_x));
+    y_list.push((objetos[i].fields.pos_y));
+    path_list.push((objetos[i].fields.path));
+
   };
- document.write(cantidad_jugadores_lista);
- document.write(cantidad_jugadores_lista2);
 
-  </script>
-<html>
+          var nueva_matriz = crear_mapa_actualizado(x_list, y_list, path_list);
+                print_matriz(nueva_matriz);
 
-        
+
+            </script>
+            </tr>
+        </table>
     {% endblock %}
