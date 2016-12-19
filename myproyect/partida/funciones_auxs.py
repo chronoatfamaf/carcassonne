@@ -126,24 +126,24 @@ def agregar_lados_a_pieza(pieza,lados):
 
 # El parametro de entrada es el primary key de la partida
 def manejodedirectorio(nombredirectorio):
-    print ("Aca va la cantidadde elementos en piezas")
-    print (os.getcwd())
-    imagenesbasicas = glob.glob("myproyect/static/piezas")
-    imagenesbasicas = os.listdir("../myproyect/static/piezas") 
+    imagenesbasicas = glob.glob("/myproyect/static/piezas")
+    imagenesbasicas = os.listdir("static/piezas") 
     print (len(imagenesbasicas))
     try:
       # Intentamos listar los elementos del directorio Partida1 por ejemplo
       # sin lo logramos es que no existe el directorio y por lo tano lo creamos 
-      listadeimagenes = glob.glob("../" +  str(nombredirectorio))
+      listadeimagenes = glob.glob("static/partida/" +  str(nombredirectorio))
     except OSError:
-      os.makedirs(("myproyect/static/partida" + str(nombredirectorio)))    
+      os.rmdir("static/partida/" +  str(nombredirectorio))
+      os.makedirs(("static/partida" + str(nombredirectorio)))    
       for l in range(1, 72):
-        im = Image.open("myproyect/static/piezas/" + PiezaAPoner + ".png")
-        im.save("myproyect/static/partida" + str(nombredirectorio) + "/" +
+        im = Image.open("static/piezas/" + PiezaAPoner + ".png")
+        im.save("static/partida" + str(nombredirectorio) + "/" +
                  imagenesbasicas[l - 1])
+        print (imagenesbasicas[l - 1])
     print(listadeimagenes)
     if(listadeimagenes == []):
-       os.makedirs(("myproyect/static/partida" + str(nombredirectorio)))    
+       os.makedirs(("static/partida" + str(nombredirectorio)))    
     else:
       for z in range(1,len(listadeimagenes)):
          os.remove(listadeimagenes[z - 1])
@@ -169,9 +169,9 @@ def manejodedirectorio(nombredirectorio):
       dibujo.text(PosicionMapa[8], "9", fill = 'yellow')
       final = Image.alpha_composite(imagen, texto)
       final.show()
-      final.save("myproyect/static/partida" + str(nombredirectorio)+ "/Seleccion" +
+      final.save("static/partida" + str(nombredirectorio)+ "/Seleccion" +
                imagenesbasicas[x - 1])
-      im.save("myproyect/static/partida" + str(nombredirectorio) + "/" +
+      im.save("static/partida" + str(nombredirectorio) + "/" +
                imagenesbasicas[x - 1])
 
 
