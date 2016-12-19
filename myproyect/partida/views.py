@@ -172,7 +172,7 @@ def jugar_partida(request):
         turno = partida.turnos
         piezas = Pieza.objects.filter(partida=partida)
         piezas = serializers.serialize("json", piezas)
-
+        print(piezas)
         print("TURNO DESPUES")
         print(turno)
         jugadores = User.objects.filter(usuario__partida=partida)

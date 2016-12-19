@@ -142,7 +142,7 @@ function lista_objetos (string) {
     return lista_objetos;
   }
 
-var piezas = "{{piezas}}"; 
+var piezas = "{{ piezas }}"; 
 document.write("Esto es una lista deberia ser un objeto");
 document.write(piezas);
 
@@ -157,6 +157,7 @@ var objetos =lista_objetos(piezas);
     path_list.push((objetos[i].fields.path));
 
   };
+document.write("ACA");
 
           var nueva_matriz = crear_mapa_actualizado(x_list, y_list, path_list);
                 print_matriz(nueva_matriz);
