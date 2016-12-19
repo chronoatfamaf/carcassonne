@@ -1,15 +1,24 @@
 # Carcassonne
 
-Instalacion:
+Preparacion del entorno virtual:
 
 virtualenv -p python 3 NOMBRE
+
 source NOMBRE/bin/activate
+
 pip3 install django
 pip3 install django-widget-tweaks
+
 pip3 install jsonpickle
+
 pip3 install Pillow 
+
+Ejecucion:
+
 python3 manage.py makemigrations
+
 python3 manage.py migrate
+
 python3 manage.py runserver
 
 Comentario General del proyecto:
