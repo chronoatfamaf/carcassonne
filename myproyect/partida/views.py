@@ -171,26 +171,26 @@ def crear_partida(request):
             partida.save()
             usuario.partida = partida
             usuario.save()
-            path = '../static/' + str(partida.pk)
+            path = '../static/partida' + str(partida.pk) + "/"
             # algo asi.. es decir crear un subdirectorio static/partidapk donde
             # estan todas las imagenes de las piezas
             #shutil.copytree('../static/piezas',path)
             manejodedirectorio(partida.pk)
-            for x in xrange(1, 72):
+            for x in range(1, 72):
               if x < 10:
                 piezanueva = Pieza(esDescartada=False,
                                    lado1 = ListaDeDescipcionDePiezas[x - 1][0],
                                    lado2 = ListaDeDescipcionDePiezas[x - 1][1],
                                    lado3 = ListaDeDescipcionDePiezas[x - 1][2],
                                    lado4 = ListaDeDescipcionDePiezas[x - 1][3],
-                                   imagenAsociada = path + '0' + str(x) + '.png' )
+                                   pathimagen = path + '0' + str(x) + '.png' )
               else :
                 piezanueva = Pieza(esDescartada=False,
                                    lado1 = ListaDeDescipcionDePiezas[x - 1][0],
                                    lado2 = ListaDeDescipcionDePiezas[x - 1][1],
                                    lado3 = ListaDeDescipcionDePiezas[x - 1][2],
                                    lado4 = ListaDeDescipcionDePiezas[x - 1][3],
-                                   imagenAsociada = path +  str(x) + '.png' )
+                                   pathimagen = path +  str(x) + '.png' )
               piezanueva.save()
               return redirect( 'unirse_a_partida',pk=partida.pk)
     else:

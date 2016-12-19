@@ -2,7 +2,7 @@ from django.db import models
 from partida.models import *
 import glob
 import os
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ColorDeJugador = [
                   'red',
@@ -126,20 +126,24 @@ def agregar_lados_a_pieza(pieza,lados):
 
 # El parametro de entrada es el primary key de la partida
 def manejodedirectorio(nombredirectorio):
-    imagenesbasicas = glob.glob("../static/Piezas/")
+    print ("Aca va la cantidadde elementos en piezas")
+    print (os.getcwd())
+    imagenesbasicas = glob.glob("myproyect/static/piezas")
+    imagenesbasicas = os.listdir("../myproyect/static/piezas") 
+    print (len(imagenesbasicas))
     try:
       # Intentamos listar los elementos del directorio Partida1 por ejemplo
       # sin lo logramos es que no existe el directorio y por lo tano lo creamos 
       listadeimagenes = glob.glob("../" +  str(nombredirectorio))
     except OSError:
-      os.makedirs(("../static/Partida" + str(nombredirectorio)))    
+      os.makedirs(("myproyect/static/partida" + str(nombredirectorio)))    
       for l in range(1, 72):
-        im = Image.open("../static/Piezas/" + PiezaAPoner + ".png")
-        im.save("../static/Partida" + str(nombredirectorio) + "/" +
+        im = Image.open("myproyect/static/piezas/" + PiezaAPoner + ".png")
+        im.save("myproyect/static/partida" + str(nombredirectorio) + "/" +
                  imagenesbasicas[l - 1])
     print(listadeimagenes)
     if(listadeimagenes == []):
-       os.makedirs(("../static/Partida" + str(nombredirectorio)))    
+       os.makedirs(("myproyect/static/partida" + str(nombredirectorio)))    
     else:
       for z in range(1,len(listadeimagenes)):
          os.remove(listadeimagenes[z - 1])
@@ -147,27 +151,27 @@ def manejodedirectorio(nombredirectorio):
 
 
     for x in range(1, 72):
-      im = Image.open("../static/Piezas/" + 
+      im = Image.open("static/piezas/" + 
                       imagenesbasicas[x - 1])
-      imagen = Image.open("../static/Piezas/" + 
+      imagen = Image.open("static/piezas/" + 
                       imagenesbasicas[x - 1])
       imagen = imagen.convert("RGBA")
       texto = Image.new('RGBA', imagen.size, (255,255,255,0))
       dibujo = ImageDraw.Draw(texto)
-      dibujo.text(PosicionMapa[turno - 1], "1", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "2", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "3", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "4", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "5", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "6", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "7", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "8", fill = ColorDeJugador[turno - 1])
-      dibujo.text(PosicionMapa[turno - 1], "9", fill = ColorDeJugador[turno - 1])
+      dibujo.text(PosicionMapa[0], "1", fill = 'yellow')
+      dibujo.text(PosicionMapa[1], "2", fill = 'yellow')
+      dibujo.text(PosicionMapa[2], "3", fill = 'yellow')
+      dibujo.text(PosicionMapa[3], "4", fill = 'yellow')
+      dibujo.text(PosicionMapa[4], "5", fill = 'yellow')
+      dibujo.text(PosicionMapa[5], "6", fill = 'yellow')
+      dibujo.text(PosicionMapa[6], "7", fill = 'yellow')
+      dibujo.text(PosicionMapa[7], "8", fill = 'yellow')
+      dibujo.text(PosicionMapa[8], "9", fill = 'yellow')
       final = Image.alpha_composite(imagen, texto)
       final.show()
-      final.save("../static/Partida" + str(nombredirectorio)+ "/Seleccion" +
+      final.save("myproyect/static/partida" + str(nombredirectorio)+ "/Seleccion" +
                imagenesbasicas[x - 1])
-      im.save("../static/Partida" + str(nombredirectorio) + "/" +
+      im.save("myproyect/static/partida" + str(nombredirectorio) + "/" +
                imagenesbasicas[x - 1])
 
 
