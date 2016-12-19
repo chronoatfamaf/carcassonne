@@ -8,6 +8,7 @@ from .forms import FormularioPartida
 from django.http import HttpResponseRedirect
 from partida.funciones_auxs import *
 import os, shutil
+import glob
 from partida.define import ListaDeDescipcionDePiezas 
 # Create your views here.
 
