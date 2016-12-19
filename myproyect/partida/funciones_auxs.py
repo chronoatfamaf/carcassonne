@@ -11,6 +11,7 @@ ColorDeJugador = [
                   'blue',
                   'rose',
                  ]
+
 PosicionMapa = [
                (7,5),
                (20,5),
@@ -25,14 +26,17 @@ PosicionMapa = [
 
 
 
-def rotarpieza(idpieza):
+def rotarpieza(idpieza, numeroderotacion):
     piezadelturno = Pieza.objects.get(partida=idpieza)
-    aux1 = piezadelturno.lado2
-    aux2 = piezadelturno.lado3
-    piezadelturno.lado2 = piezadelturno.lado1
-    piezadelturno.lado3 = aux1
-    piezadelturno.lado1 = piezadelturno.lado4
-    piezadelturno.lado4 = aux2
+
+    for j in range(1, numeroderotacion):
+      aux1 = piezadelturno.lado2
+      aux2 = piezadelturno.lado3
+      piezadelturno.lado2 = piezadelturno.lado1
+      piezadelturno.lado3 = aux1
+      piezadelturno.lado1 = piezadelturno.lado4
+      piezadelturno.lado4 = aux2
+
 # dado un numero entre 0 y 71 (que identifica una imagen de pieza)
 # se devuelve los lados que tiene esa pieza
 # ej lados(57) = [1,1,1,2] signgifica que 

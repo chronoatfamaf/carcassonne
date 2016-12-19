@@ -93,7 +93,7 @@ def jugar_partida(request):
             
             cant_giros = request.POST["cant_giros"]
             # aca se deberia llamar a la funcion de rotar_imagen
-            rotarpieza(partida.pieza_en_juego)
+            rotarpieza(partida.pieza_en_juego, cant_giros)
 
             # si el usuario no coloco algun dato del posteo necesario
             if pos_x == '' or pos_y == '':
