@@ -158,6 +158,8 @@ def jugar_partida(request):
     }
     return render(request,'jugar_partida.html', context) 
 
+
+
 @login_required
 def crear_partida(request):
     if request.method == "POST":

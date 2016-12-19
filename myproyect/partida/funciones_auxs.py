@@ -1,6 +1,31 @@
 from django.db import models
 from partida.models import *
 
+ColorDeJugador = [
+                  'red',
+                  'green',
+                  'black',
+                  'blue',
+                  'rose',
+                 ]
+PosicionMapa = [
+               (,),
+               (,),
+               (,),
+               (,),
+               (,),
+               ]
+
+
+
+def rotarpieza(idpieza):
+    piezadelturno = Pieza.objects.get(partida=idpieza)
+    aux1 = piezadelturno.lado2
+    aux2 = piezadelturno.lado3
+    piezadelturno.lado2 = piezadelturno.lado1
+    piezadelturno.lado3 = aux1
+    piezadelturno.lado1 = piezadelturno.lado4
+    piezadelturno.lado4 = aux2
 # dado un numero entre 0 y 71 (que identifica una imagen de pieza)
 # se devuelve los lados que tiene esa pieza
 # ej lados(57) = [1,1,1,2] signgifica que 
@@ -44,9 +69,20 @@ def compatibilidad_juego(x,y,lados, partida):
 	pieza_arriba = piezas_partida.filter(pos_x=pos_x+1,pos_y=pos_y)
 	pieza_abajo = piezas_partida.filter(pos_x=pos_x-1,pos_y=pos_y)
 	pieza_derecha = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y+1)
-	pieza_izquierda = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y+1)
+	pieza_izquierda = piezas_partida.filter(pos_x=pos_x,pos_y=pos_y-1)
+	control1 = not pieza_arriba and not pieza_abajo
+  #control1 = not pieza_arriba and not pieza_abajo
+  #control2 = not pieza_derecha and not pieza_izquierda
+	control2 = not piezas_partida.filter(pos_x=pos_x,pos_y=pos_y+1) and not pieza_izquierda
 
-	# si no hay pieza arriba
+
+
+
+
+	if control1 and control2:
+		return 0
+	if not pieza_arriba:
+		arriba_valido = 1
 	if not pieza_arriba:
 		arriba_valido = 1
 	else: 
@@ -81,3 +117,37 @@ def agregar_lados_a_pieza(pieza,lados):
 	pieza.lado1 = lados[3]
 
 	return pieza
+
+# El parametro de entrada es el primary key de la partida
+def manejodedirectorio(nombredirectorio):
+    imagenesbasicas = glob.glob("../static/Piezas/")
+    try:
+      # Intentamos listar los elementos del directorio Partida1 por ejemplo
+      # sin lo logramos es que no existe el directorio y por lo tano lo creamos 
+      listadeimagenes = glob.glob("../nombredirectorio")
+    except OSError:
+      os.makedirs(("../static/Partida" + str(nombredirectorio)))    
+      for x in xrange(1, 72):
+        im = Image.open("../static/Piezas/" + PiezaAPoner + ".png")
+        im.save("../static/Partida" + str(nombredirectorio) + "/" +
+                 imagenesbasicas[x - 1])
+
+    if(listadeimagenes == []):
+      os.rmdir(("../static/Partida" + str(nombredirectorio)))
+      os.makedirs(("../static/Partida" + str(nombredirectorio)))    
+      for x in xrange(1, 72):
+        im = Image.open("../static/Piezas/" + 
+                        imagenesbasicas[x - 1])
+        im.save("../static/Partida" + str(nombredirectorio) + "/" +
+                 imagenesbasicas[x - 1])
+
+#def asignarseguidor(posicion, direcciondelaimagen, color):
+#  imagen = Image.open(direciciondelaimagen)
+#  imagen = imagen.convert("RGBA")
+#  texto = Image.new('RGBA', imagen.size, (255,255,255,0))
+#  dibujo = ImageDraw.Draw(texto)
+#  dibujo.text((10, 40), "S", fill=(255,255,255,128
+#  dibujo.text((110,40), "S", fill=(255,255,255,255
+#  final = Image.alpha_composite(imagen, texto)
+#  final.show()
+#  final.save(direcciondelaimagen)
